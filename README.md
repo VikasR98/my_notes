@@ -1,22 +1,5 @@
-# my_notes
 
-A new Flutter project to create and store notes in an easy and simple way.
 
-## Getting Started
+# We can use Navigator for the route navigation but it needs context to work... that's annoying
 
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
-
-# Name Length > 3 validation
-# email validator
-# password length> 6
-
-# Navigator needs context... that's annoying
+# Passing arguments as the  final arguments = ModalRoute.of(context)?.settings.arguments as AddEntryArgs;

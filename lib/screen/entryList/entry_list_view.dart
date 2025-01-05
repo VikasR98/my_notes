@@ -19,9 +19,10 @@ class _NotesListViewState extends State<NotesListView> {
     Brightness theme = Theme.of(context).brightness;
     return ViewModelBuilder.reactive(
       onViewModelReady: (viewModel){
+        // viewModel.deleteDiaryEntry(id:11);
         viewModel.getAllEntries();
       },
-      viewModelBuilder: () => NotesListViewModel(),
+      viewModelBuilder: () => EntryListViewModel(),
       builder: (context, viewModel, child) {
         return Scaffold(
           appBar: AppBar(
@@ -48,7 +49,7 @@ class _NotesListViewState extends State<NotesListView> {
               )
             ],
           ),
-          floatingActionButton: const AddEntryBtn(),
+          floatingActionButton:  AddEntryBtn(viewModel: viewModel,),
           body: NotesListBody(
             viewModel: viewModel,
             theme: theme,

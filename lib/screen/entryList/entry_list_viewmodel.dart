@@ -10,7 +10,7 @@ import 'package:my_notes/screen/addEntry/add_entry_view.dart';
 import 'package:my_notes/screen/entryList/localWidgets/notes_list_dialog.dart';
 import 'package:stacked/stacked.dart';
 
-class NotesListViewModel extends BaseViewModel {
+class EntryListViewModel extends BaseViewModel {
   final dbHelper = DatabaseHelper();
 
   onItemTap({
@@ -29,6 +29,8 @@ class NotesListViewModel extends BaseViewModel {
         break;
       case NotesOptions.edit:
         if (context.mounted) {
+          /// Passing arguments like this is cumbersome/complex
+          /// it needs context and messy syntax
           Navigator.pushNamed(
             context,
             addEntryRoute,
@@ -36,10 +38,13 @@ class NotesListViewModel extends BaseViewModel {
               entry: entry,
               formAction: FormAction.edit,
             ),
-          );
+          ).then((value){
+            getAllEntries();
+          });
         }
         break;
       case NotesOptions.delete:
+        deleteDiaryEntry(id: entry?.id ?? 0);
         break;
     }
   }
@@ -59,6 +64,8 @@ class NotesListViewModel extends BaseViewModel {
 
   getAllEntries() async {
     entries = await dbHelper.getDiaryEntries();
+    entries = entries?.reversed.cast<DiaryEntry>().toList();
+    notifyListeners();
 
     for (var entry in entries!) {
       print(
@@ -78,6 +85,13 @@ class NotesListViewModel extends BaseViewModel {
         formAction: formAction,
         entry: entry,
       ),
-    );
+    ).then((value){
+      getAllEntries();
+    });
+  }
+
+  deleteDiaryEntry({required int id}) async {
+    await dbHelper.deleteDiaryEntry(id);
+    getAllEntries();
   }
 }

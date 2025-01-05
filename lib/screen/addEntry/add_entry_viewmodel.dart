@@ -1,11 +1,9 @@
-import 'dart:ui';
-
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:my_notes/databse_helper/data_base_helper.dart';
+import 'package:my_notes/enum/form_action.dart';
 import 'package:my_notes/model/data_entry.dart';
-import 'package:my_notes/model/mood_mapping.dart';
 import 'package:stacked/stacked.dart';
 
 class AddEntryViewModel extends BaseViewModel {
@@ -13,7 +11,7 @@ class AddEntryViewModel extends BaseViewModel {
   TextEditingController descriptionController = TextEditingController();
   final dbHelper = DatabaseHelper();
 
-
+  FormAction? formAction = FormAction.add;
 
   insertNewEntry({required DiaryEntry entry, required context}) async {
     int id = await dbHelper.insertDiaryEntry(entry);
@@ -24,16 +22,34 @@ class AddEntryViewModel extends BaseViewModel {
     descriptionController.clear();
     selectedValue = 0;
     Navigator.pop(context);
+  }
+
+  FontWeight _fontWeight = FontWeight.normal;
+
+  FontWeight get fontWeight => _fontWeight;
+
+  set fontWeight(FontWeight value) {
+    _fontWeight = value;
     notifyListeners();
   }
 
+  FontStyle _fontStyle = FontStyle.normal;
 
-  updateEntry() async {
-    // Update an entry
-    // entry.title = "My Updated Entry";
-    // entry.description = "This is an updated description.";
-    // entry.mood = Mood.sad;
-    // await dbHelper.updateDiaryEntry(entry);
+  int? _id;
+
+  int? get id => _id;
+
+  set id(int? value) {
+    _id = value;
+    notifyListeners();
+  }
+
+  updateEntry({required DiaryEntry entry, required context}) async {
+    await dbHelper.updateDiaryEntry(entry);
+    titleController.clear();
+    descriptionController.clear();
+    selectedValue = 0;
+    Navigator.pop(context);
   }
 
   deleteEntry(int id) async {
@@ -70,5 +86,15 @@ class AddEntryViewModel extends BaseViewModel {
 
   getLastEditTime(DateTime now) {
     lastEditTime = DateFormat('MMM d, h:mm a').format(now);
+    // print(lastEditTime);
   }
+
+  FontStyle get fontStyle => _fontStyle;
+
+  set fontStyle(FontStyle value) {
+    _fontStyle = value;
+    notifyListeners();
+  }
+
+
 }

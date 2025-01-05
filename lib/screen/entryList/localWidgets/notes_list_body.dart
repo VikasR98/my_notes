@@ -12,7 +12,7 @@ class NotesListBody extends StatelessWidget {
   });
 
   final Brightness theme;
-  final NotesListViewModel viewModel;
+  final EntryListViewModel viewModel;
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +25,7 @@ class NotesListBody extends StatelessWidget {
         ),
         Expanded(
           child: ListView.builder(
-            reverse: true,
+            // reverse: true,
             padding: Dimens.appScreenPaddingHorizontal(),
             physics: const BouncingScrollPhysics(),
             itemCount: viewModel.entries?.length ?? 0,

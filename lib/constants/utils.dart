@@ -34,3 +34,23 @@ String getDaySuffix(int day) {
       return "th";
   }
 }
+
+String formatDateTime(String inputDateTime) {
+  // Parse the input datetime string to a DateTime object
+  DateTime dateTime = DateTime.parse(inputDateTime);
+
+  // Format the DateTime object to the desired output format
+  String formattedDate = DateFormat('MMM d, h:mm a').format(dateTime);
+
+  return formattedDate;
+}
+
+String convertToFullDateTime(String inputDateTime) {
+  // Parse the input datetime string
+  DateTime dateTime = DateFormat('MMM d, h:mm a').parse(inputDateTime);
+
+  // Format it to the desired output format
+  String formattedDate = DateFormat('yyyy-MM-dd HH:mm:ss.SSSSSS').format(dateTime);
+
+  return formattedDate;
+}
