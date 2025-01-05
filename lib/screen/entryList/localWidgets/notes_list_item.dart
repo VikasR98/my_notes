@@ -2,16 +2,24 @@ import 'package:flutter/material.dart';
 import 'package:my_notes/app/image_config.dart';
 import 'package:my_notes/constants/colors.dart';
 import 'package:my_notes/constants/dimes.dart';
-import 'package:my_notes/constants/strings.dart';
 import 'package:my_notes/constants/utils.dart';
+import 'package:my_notes/model/mood_mapping.dart';
 
 class NotesListItem extends StatelessWidget {
   const NotesListItem({
     super.key,
     required this.onTap,
+    required this.title,
+    required this.subtitle,
+    required this.date,
+    required this.mood,
   });
 
   final void Function()? onTap;
+  final String title;
+  final String subtitle;
+  final String date;
+  final int mood;
 
   @override
   Widget build(BuildContext context) {
@@ -46,7 +54,7 @@ class NotesListItem extends StatelessWidget {
                     overflow: TextOverflow.ellipsis,
                   ),
                   Text(
-                    date,
+                    formatDate(date),
                     style: Theme.of(context).textTheme.bodySmall?.copyWith(
                           fontWeight: FontWeight.w500,
                           fontSize: 10,
@@ -63,7 +71,7 @@ class NotesListItem extends StatelessWidget {
             Expanded(
               flex: 1,
               child: Image.asset(
-                sadEmoji,
+                Mood.moodToEmoji(mood),
                 height: 80,
               ),
             ),

@@ -8,11 +8,13 @@ class EntryHeader extends StatelessWidget {
     required this.theme,
     required this.lastEditTime,
     required this.onChanged,
+    required this.titleController,
   });
 
   final Brightness theme;
   final String? lastEditTime;
   final void Function(String p1) onChanged;
+  final TextEditingController titleController;
 
   @override
   Widget build(BuildContext context) {
@@ -36,6 +38,7 @@ class EntryHeader extends StatelessWidget {
                 )
               : Container(),
           AppTextFormFieldNew(
+            textEditingController: titleController,
             hintText: 'Enter Title',
             hintStyle: Theme.of(context).textTheme.headlineLarge?.copyWith(
                   fontWeight: FontWeight.w800,

@@ -18,3 +18,5 @@ samples, guidance on mobile development, and a full API reference.
 # Name Length > 3 validation
 # email validator
 # password length> 6
+
+# Navigator needs context... that's annoying

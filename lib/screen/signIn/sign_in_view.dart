@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:my_notes/constants/colors.dart';
 import 'package:my_notes/constants/dimes.dart';
+import 'package:my_notes/constants/routes.dart';
 import 'package:my_notes/constants/utils.dart';
 import 'package:my_notes/screen/signIn/sign_in_viewmodel.dart';
 import 'package:my_notes/widgets/app_button.dart';
@@ -109,8 +110,10 @@ class _SignInViewState extends State<SignInView> {
                           : AppColors.accentColorFifty,
                       onTap: () {
                         // if (_formKey.currentState!.validate()) {
-                          Navigator.of(context).pushNamedAndRemoveUntil(
-                              '/notesListRoute', (route) => false);
+                        Navigator.of(context).pushNamedAndRemoveUntil(
+                          entryListRoute,
+                          (route) => false,
+                        );
                         // } else {
                         //   viewModel.formAutoValidate = AutovalidateMode.always;
                         // }

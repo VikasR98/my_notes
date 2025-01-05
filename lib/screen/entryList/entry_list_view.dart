@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:my_notes/constants/colors.dart';
 import 'package:my_notes/constants/dimes.dart';
-import 'package:my_notes/screen/notesList/localWidgets/add_note_btn.dart';
-import 'package:my_notes/screen/notesList/localWidgets/notes_list_body.dart';
-import 'package:my_notes/screen/notesList/notes_list_viewmodel.dart';
+import 'package:my_notes/screen/entryList/localWidgets/add_note_btn.dart';
+import 'package:my_notes/screen/entryList/localWidgets/notes_list_body.dart';
+import 'package:my_notes/screen/entryList/entry_list_viewmodel.dart';
 import 'package:stacked/stacked.dart';
 
 class NotesListView extends StatefulWidget {
@@ -18,6 +18,9 @@ class _NotesListViewState extends State<NotesListView> {
   Widget build(BuildContext context) {
     Brightness theme = Theme.of(context).brightness;
     return ViewModelBuilder.reactive(
+      onViewModelReady: (viewModel){
+        viewModel.getAllEntries();
+      },
       viewModelBuilder: () => NotesListViewModel(),
       builder: (context, viewModel, child) {
         return Scaffold(
@@ -47,10 +50,9 @@ class _NotesListViewState extends State<NotesListView> {
           ),
           floatingActionButton: const AddEntryBtn(),
           body: NotesListBody(
+            viewModel: viewModel,
             theme: theme,
-            onTap: (){
-              viewModel.onItemTap(context);
-            },
+
           ),
         );
       },

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:my_notes/constants/colors.dart';
+import 'package:my_notes/constants/routes.dart';
 import 'package:my_notes/constants/strings.dart';
 import 'package:my_notes/screen/signUp/sign_up_view.dart';
 import 'package:my_notes/screen/welcomeScreen/welcome_screen_viewmodel.dart';
@@ -66,7 +67,7 @@ class _WelcomeScreenViewState extends State<WelcomeScreenView> {
                           AppButton(
                             btnText: 'Create Account',
                             onTap: () {
-                              Navigator.pushNamed(context, '/signUpRoute');
+                              Navigator.pushNamed(context, signUpRoute);
                             },
                           ),
                           const SizedBox(
@@ -75,7 +76,7 @@ class _WelcomeScreenViewState extends State<WelcomeScreenView> {
                           AppButton(
                             btnText: 'Sign In',
                             onTap: () {
-                              Navigator.pushNamed(context, '/signInRoute');
+                              Navigator.pushNamed(context, signInRoute);
                               // Navigator.push
                             },
                           ),

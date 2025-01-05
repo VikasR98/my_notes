@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:my_notes/constants/colors.dart';
 import 'package:my_notes/constants/dimes.dart';
+import 'package:my_notes/constants/routes.dart';
 import 'package:my_notes/constants/sizeExtentions.dart';
 import 'package:my_notes/constants/strings.dart';
 import 'package:my_notes/screen/settings/settings_viewModel.dart';
@@ -30,97 +31,113 @@ class _SettingsViewState extends State<SettingsView> {
                 title: const DefaultAppBarTitle(title: 'Settings')),
             body: Padding(
               padding: const EdgeInsets.all(8.0),
-              child: Column(
+              child: Stack(
                 children: [
-                  Container(
-                    height: context.height * 0.75,
-                    margin: const EdgeInsets.symmetric(
-                      horizontal: 20,
-                      vertical: 30,
-                    ),
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 20,
-                      vertical: 50,
-                    ),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(35),
-                      color: Theme.of(context).colorScheme.primary,
-                    ),
-                    child: Column(
+                  Column(
+                    children: [
+                      Container(
+                        height: context.height * 0.75,
+                        margin: const EdgeInsets.symmetric(
+                          horizontal: 20,
+                          vertical: 30,
+                        ),
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 20,
+                          vertical: 50,
+                        ),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(35),
+                          color: Theme.of(context).colorScheme.primary,
+                        ),
+                        child: Column(
+                          children: [
+                            SettingsRow(
+                              onTap: () {},
+                              label: changeProfileImageString,
+                              icon: const CircleAvatar(
+                                backgroundColor: AppColors.iconBgColor,
+                                radius: 25,
+                                child: Icon(
+                                  Icons.person,
+                                  color: AppColors.appWhite,
+                                  size: 35,
+                                ),
+                              ),
+                            ),
+                            SettingsRow(
+                              label: darkModeString,
+                              icon: AppSwitchWidget(
+                                value: viewModel.darkModeSwitchVal,
+                                onChanged: (bool? val) {
+                                  viewModel.darkModeSwitchVal = val ?? true;
+                                },
+                              ),
+                            ),
+                            SettingsRow(
+                              label: bioMetricString,
+                              icon: AppSwitchWidget(
+                                value: viewModel.bioMatricSwitchVal,
+                                onChanged: (bool? val) {
+                                  viewModel.bioMatricSwitchVal = val ?? true;
+                                },
+                              ),
+                            ),
+                            SettingsRow(
+                              label: syncAutoString,
+                              icon: AppSwitchWidget(
+                                value: viewModel.syncAutoSwitchVal,
+                                onChanged: (bool? val) {
+                                  viewModel.syncAutoSwitchVal = val ?? true;
+                                },
+                              ),
+                            ),
+                            SettingsRow(
+                              onTap: () {
+                                viewModel.syncNow();
+                              },
+                              label: syncNowString,
+                              icon: viewModel.getSyncWidget(),
+                            ),
+                            SettingsRow(
+                              onTap: () {
+                                // viewModel.syncNow();
+                                Navigator.pushNamed(context, '/pinScreenRoute');
+                              },
+                              label: 'Pin Screen',
+                              icon: const Icon(
+                                Icons.arrow_forward_ios_rounded,
+                                size: 30,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                  Positioned(
+                    bottom: 10,
+                    left: 0,
+                    right: 0,
+                    child: Row(
+                      mainAxisSize: MainAxisSize.max,
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        SettingsRow(
-                          onTap: () {},
-                          label: changeProfileImageString,
-                          icon: const CircleAvatar(
-                            backgroundColor: AppColors.iconBgColor,
-                            radius: 25,
-                            child: Icon(
-                              Icons.person,
-                              color: AppColors.appWhite,
-                              size: 35,
+                        Align(
+                          alignment: Alignment.center,
+                          child: GestureDetector(
+                            onTap: () {
+                              Navigator.pushNamed(context, signInRoute);
+                            },
+                            child: Text(
+                              logoutString,
+                              style: context.titleLarge?.copyWith(
+                                fontWeight: FontWeight.bold,
+                                color: AppColors.primaryColor,
+                              ),
                             ),
                           ),
                         ),
-                        SettingsRow(
-                          label: darkModeString,
-                          icon: AppSwitchWidget(
-                            value: viewModel.darkModeSwitchVal,
-                            onChanged: (bool? val) {
-                              viewModel.darkModeSwitchVal = val ?? true;
-                            },
-                          ),
-                        ),
-                        SettingsRow(
-                          label: bioMetricString,
-                          icon: AppSwitchWidget(
-                            value: viewModel.bioMatricSwitchVal,
-                            onChanged: (bool? val) {
-                              viewModel.bioMatricSwitchVal = val ?? true;
-                            },
-                          ),
-                        ),
-                        SettingsRow(
-                          label: syncAutoString,
-                          icon: AppSwitchWidget(
-                            value: viewModel.syncAutoSwitchVal,
-                            onChanged: (bool? val) {
-                              viewModel.syncAutoSwitchVal = val ?? true;
-                            },
-                          ),
-                        ),
-                        SettingsRow(
-                          onTap: () {
-                            viewModel.syncNow();
-                          },
-                          label: syncNowString,
-                          icon: viewModel.getSyncWidget(),
-                        ),
-                        SettingsRow(
-                          onTap: () {
-                            // viewModel.syncNow();
-                            Navigator.pushNamed(context, '/pinScreenRoute');
-                          },
-                          label: 'Pin Screen',
-                          icon: const Icon(
-                            Icons.arrow_forward_ios_rounded,
-                            size: 30,
-                            // weight: 1,
-                          ),
-                        ),
-
                       ],
-                    ),
-                  ),
-                  const Spacer(),
-                  GestureDetector(
-                    onTap: (){
-                      Navigator.pushNamed(context, '/signInRoute');
-                    },
-                    child: Text(
-                      logoutString,
-                      style: context.titleLarge?.copyWith(
-                          fontWeight: FontWeight.bold,
-                          color: AppColors.primaryColor),
                     ),
                   )
                 ],
@@ -129,5 +146,4 @@ class _SettingsViewState extends State<SettingsView> {
           );
         });
   }
-
 }

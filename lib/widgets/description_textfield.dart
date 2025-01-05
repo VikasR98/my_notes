@@ -8,17 +8,20 @@ class DescriptionTextField extends StatelessWidget {
     required this.textAlign,
     required this.fontWeight,
     required this.fontStyle,
+    required this.controller,
   });
 
   void Function(String) onChanged;
   final TextAlign textAlign;
   final FontWeight fontWeight;
   final FontStyle fontStyle;
+  final TextEditingController controller;
 
   @override
   Widget build(BuildContext context) {
     Brightness theme = Theme.of(context).brightness;
     return TextFormField(
+      controller: controller,
       textAlign: textAlign,
       onChanged: onChanged,
       maxLines: null,

@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:my_notes/constants/colors.dart';
 import 'package:my_notes/constants/dimes.dart';
-import 'package:my_notes/screen/createNote/create_note_view.dart';
+import 'package:my_notes/constants/routes.dart';
+import 'package:my_notes/screen/addEntry/add_entry_view.dart';
 
 class AddEntryBtn extends StatelessWidget {
   const AddEntryBtn({
@@ -11,13 +12,11 @@ class AddEntryBtn extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: (){
-        Navigator.push(
-            context,
-
-            ///[MaterialPageRoute] transitions between routes with
-            ///platform specific animations (android and ios)
-            MaterialPageRoute(builder: (context) => const CreateNoteView()));
+      onTap: () {
+        Navigator.pushNamed(
+          context,
+          addEntryRoute,
+        );
       },
       child: const CircleAvatar(
         radius: 30,
