@@ -21,4 +21,5 @@ const String syncAutoString = 'Sync Automatically';
 const String syncNowString = 'Sync Now';
 const String logoutString = 'Logout';
 const String createPinString = 'Create PIN';
+// const String viewEntry = 'View Entry';
 

@@ -14,6 +14,7 @@ import 'package:my_notes/screen/settings/settings_view.dart';
 import 'package:my_notes/screen/signIn/sign_in_view.dart';
 import 'package:my_notes/screen/signUp/sign_up_view.dart';
 import 'package:my_notes/screen/splash_screen.dart';
+import 'package:my_notes/screen/viewEntry/view_entry_view.dart';
 import 'package:my_notes/screen/welcomeScreen/welcome_screen_view.dart';
 
 import 'constants/colors.dart';
@@ -56,6 +57,7 @@ class _MyAppState extends State<MyApp> {
         settingsRoute: (context) => const SettingsView(),
         pinScreenRoute: (_) => const PinScreenView(),
         addEntryRoute: (_) => const AddEntryView(),
+        viewEntryRoute:(_)=> const ViewEntryView(),
       },
       // home: const SplashScreen(),
     );

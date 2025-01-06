@@ -32,6 +32,15 @@ class SaveButtonUi extends StatelessWidget {
   }
 
   _updateEntry(BuildContext context) {
+    if (viewModel.titleController.text.isEmpty &&
+        viewModel.descriptionController.text.isEmpty) {
+      Fluttertoast.showToast(msg: 'Please enter title or description');
+      return;
+    }
+    if(viewModel.selectedValue == 0){
+      Fluttertoast.showToast(msg: 'Please select mood');
+      return;
+    }
     viewModel.updateEntry(
       context: context,
       entry: DiaryEntry(

@@ -28,6 +28,14 @@ class _AddEntryViewState extends State<AddEntryView> {
   Widget build(BuildContext context) {
     Brightness theme = Theme.of(context).brightness;
 
+    String getAppBarTitle({required FormAction? formAction}) {
+      if (formAction == FormAction.add) {
+        return addEntryString;
+      } else {
+        return editEntryString;
+      }
+    }
+
     return ViewModelBuilder.reactive(
         onViewModelReady: (viewModel) {
           try {
@@ -53,8 +61,12 @@ class _AddEntryViewState extends State<AddEntryView> {
         builder: (context, viewModel, child) {
           return Scaffold(
             appBar: AppBar(
-              leading: const DefaultAppBarLeading(),
-              title: const DefaultAppBarTitle(title: addEntryString),
+              leading: const AppBarBackArrow(),
+              title: DefaultAppBarTitle(
+                title: getAppBarTitle(
+                  formAction: viewModel.formAction,
+                ),
+              ),
               actions: [
                 SaveButtonUi(viewModel: viewModel),
               ],
@@ -101,7 +113,6 @@ class _AddEntryViewState extends State<AddEntryView> {
           );
         });
   }
-
 }
 
 class AddEntryArgs {

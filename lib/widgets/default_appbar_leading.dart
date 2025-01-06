@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:my_notes/constants/dimes.dart';
-class DefaultAppBarLeading extends StatelessWidget {
-  const DefaultAppBarLeading({
+class AppBarBackArrow extends StatelessWidget {
+  const AppBarBackArrow({
     super.key,
   });
 

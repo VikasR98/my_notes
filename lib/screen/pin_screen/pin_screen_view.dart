@@ -27,7 +27,7 @@ class _PinScreenViewState extends State<PinScreenView> {
         builder: (context, viewModel, child) {
           return Scaffold(
               appBar: AppBar(
-                leading: const DefaultAppBarLeading(),
+                leading: const AppBarBackArrow(),
                 title: const DefaultAppBarTitle(title: createPinString),
               ),
               body: Center(

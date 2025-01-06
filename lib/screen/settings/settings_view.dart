@@ -27,7 +27,7 @@ class _SettingsViewState extends State<SettingsView> {
         builder: (context, viewModel, child) {
           return Scaffold(
             appBar: AppBar(
-                leading: const DefaultAppBarLeading(),
+                leading: const AppBarBackArrow(),
                 title: const DefaultAppBarTitle(title: 'Settings')),
             body: Padding(
               padding: const EdgeInsets.all(8.0),

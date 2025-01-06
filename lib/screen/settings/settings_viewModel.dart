@@ -42,6 +42,7 @@ class SettingsViewModel extends BaseViewModel {
       AppColors.primaryColor,
     );
   }
+
   getThumbColor(final theme) {
     if (theme == Brightness.light) {
       return MaterialStateProperty.all(
@@ -55,17 +56,18 @@ class SettingsViewModel extends BaseViewModel {
 
   bool? _syncBusy = false;
 
-  bool ?get syncBusy => _syncBusy;
+  bool? get syncBusy => _syncBusy;
 
   set syncBusy(bool? value) {
     _syncBusy = value;
     notifyListeners();
   }
+
   int flag = 1;
 
-  void syncNow(){
+  void syncNow() {
     syncBusy = true;
-    Timer(const Duration(seconds: 2), (){
+    Timer(const Duration(seconds: 2), () {
       syncBusy = false;
       flag = 2;
     });
@@ -73,9 +75,11 @@ class SettingsViewModel extends BaseViewModel {
 
   Widget getSyncWidget() {
     if (syncBusy == true) {
-      return const CircularProgressIndicator(
-        color: AppColors.primaryColor,
-        strokeWidth: 5,
+      return const CircularProgressIndicator.adaptive(
+        // backgroundColor: Colors.red,
+        backgroundColor: AppColors.primaryColor,
+        strokeWidth: 10,
+        // strokeWidth: 5,
       );
     } else {
       if (flag == 1) {
@@ -91,28 +95,4 @@ class SettingsViewModel extends BaseViewModel {
       );
     }
   }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 }

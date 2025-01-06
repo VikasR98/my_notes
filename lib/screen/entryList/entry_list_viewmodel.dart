@@ -26,6 +26,17 @@ class EntryListViewModel extends BaseViewModel {
     );
     switch (result) {
       case NotesOptions.view:
+        if (context.mounted) {
+          Navigator.pushNamed(
+            context,
+            viewEntryRoute,
+            arguments: entry,
+          ).then(
+            (value) {
+              getAllEntries();
+            },
+          );
+        }
         break;
       case NotesOptions.edit:
         if (context.mounted) {
@@ -38,7 +49,7 @@ class EntryListViewModel extends BaseViewModel {
               entry: entry,
               formAction: FormAction.edit,
             ),
-          ).then((value){
+          ).then((value) {
             getAllEntries();
           });
         }
@@ -85,7 +96,7 @@ class EntryListViewModel extends BaseViewModel {
         formAction: formAction,
         entry: entry,
       ),
-    ).then((value){
+    ).then((value) {
       getAllEntries();
     });
   }

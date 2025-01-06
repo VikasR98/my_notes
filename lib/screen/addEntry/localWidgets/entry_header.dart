@@ -29,13 +29,15 @@ class EntryHeader extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           lastEditTime != null
-              ? Text(
-                  lastEditTime ?? '',
-                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                        color: Colors.grey,
-                        fontSize: 20,
-                      ),
-                )
+              ? FittedBox(
+                child: Text(
+                    lastEditTime ?? '',
+                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                          color: Colors.grey,
+                          fontSize: 20,
+                        ),
+                  ),
+              )
               : Container(),
           AppTextFormFieldNew(
             textEditingController: titleController,
