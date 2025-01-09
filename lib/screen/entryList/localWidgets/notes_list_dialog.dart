@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:my_notes/constants/colors.dart';
 import 'package:my_notes/constants/dimes.dart';
 import 'package:my_notes/constants/sizeExtentions.dart';
 import 'package:my_notes/constants/strings.dart';
@@ -96,7 +97,7 @@ class DialogOption extends StatelessWidget {
 
   getColor() {
     if (label == deleteEntryString) {
-      return Colors.red;
+      return AppColors.primaryColor;
     }
   }
 }

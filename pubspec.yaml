@@ -45,10 +45,14 @@ dependencies:
   auto_size_text: ^3.0.0
   path: ^1.9.0
   fluttertoast: ^8.2.10
+  smooth_page_indicator: ^1.2.0+3
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  dots_indicator: ^2.1.0
+  font_awesome_flutter:
+  lottie:
 
 
   # The "flutter_lints" package below contains a set of recommended lints to
@@ -75,6 +79,7 @@ flutter:
   uses-material-design: true
   assets:
     - assets/images/
+    - assets/animations/
   fonts:
     - family: Poppins
       fonts:

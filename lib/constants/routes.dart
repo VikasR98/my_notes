@@ -16,4 +16,5 @@ const String settingsRoute = '/settingsRoute';
 const String pinScreenRoute = '/pinScreenRoute';
 const String addEntryRoute = '/addEntryRoute';
 const String viewEntryRoute = '/viewEntryRoute';
+const String onboardingRoute = '/onboardingRoute';
 

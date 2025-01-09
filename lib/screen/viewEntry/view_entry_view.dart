@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:my_notes/constants/colors.dart';
 import 'package:my_notes/constants/dimes.dart';
+import 'package:my_notes/constants/routes.dart';
 import 'package:my_notes/constants/strings.dart';
 import 'package:my_notes/constants/utils.dart';
+import 'package:my_notes/enum/form_action.dart';
 import 'package:my_notes/model/data_entry.dart';
 import 'package:my_notes/model/mood_mapping.dart';
+import 'package:my_notes/screen/addEntry/add_entry_view.dart';
 import 'package:my_notes/screen/viewEntry/view_entry_viewmodel.dart';
+import 'package:my_notes/screen/viewEntry/widgets/view_entry_header.dart';
 import 'package:my_notes/widgets/default_appbar_leading.dart';
 import 'package:my_notes/widgets/default_appbar_title.dart';
 import 'package:my_notes/widgets/description_textfield.dart';
@@ -38,11 +42,20 @@ class _ViewEntryViewState extends State<ViewEntryView> {
             leading: const AppBarBackArrow(),
             title: const DefaultAppBarTitle(title: viewEntryString),
           ),
+          floatingActionButton: EditEntryFloatingBtn(
+            viewModel: viewModel,
+            entry: entry,
+          ),
           body: Column(
             children: [
-              ViewEntryHeaderUi(entry: entry),
               Expanded(
+                flex: 1,
+                child: ViewEntryHeaderUi(entry: entry),
+              ),
+              Expanded(
+                flex: 4,
                 child: Container(
+                    width: double.infinity,
                     padding: const EdgeInsets.only(
                       top: 50,
                       left: 30,
@@ -60,25 +73,13 @@ class _ViewEntryViewState extends State<ViewEntryView> {
                     child: SingleChildScrollView(
                       child: Text(
                         entry.description,
-                        style:
-                            Theme.of(context).textTheme.titleLarge?.copyWith(
-                                  height: 1.4,
-                                  // fontWeight: fontWeight,
-                                  // fontStyle: fontStyle,
-                                ),
+                        style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                              height: 1.4,
+                              // fontWeight: fontWeight,
+                              // fontStyle: fontStyle,
+                            ),
                       ),
-                    )
-                    // child: DescriptionTextField(
-                    //   enabled: false,
-                    //   controller: controller,
-                    //   fontWeight: FontWeight.normal,
-                    //   fontStyle: FontStyle.normal,
-                    //   textAlign: TextAlign.left,
-                    //   onChanged: (String value) {
-                    //     // viewModel.getLastEditTime(DateTime.now());
-                    //   },
-                    // ),
-                    ),
+                    )),
               )
             ],
           ),
@@ -88,53 +89,37 @@ class _ViewEntryViewState extends State<ViewEntryView> {
   }
 }
 
-class ViewEntryHeaderUi extends StatelessWidget {
-  const ViewEntryHeaderUi({
+class EditEntryFloatingBtn extends StatelessWidget {
+  final ViewEntryViewModel viewModel;
+  final DiaryEntry entry;
+
+  const EditEntryFloatingBtn({
     super.key,
+    required this.viewModel,
     required this.entry,
   });
 
-  final DiaryEntry entry;
-
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 30.0, vertical: 20.0),
-      child: Row(
-        children: [
-          Expanded(
-            flex: 2,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  entry.title,
-                  style: Theme.of(context)
-                      .textTheme
-                      .headlineLarge
-                      ?.copyWith(fontWeight: FontWeight.w800),
-                ),
-                Text(
-                  formatDateTime(entry.dateTime),
-                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                        color: Colors.grey,
-                        fontSize: 20,
-                      ),
-                )
-              ],
-            ),
+    return GestureDetector(
+      onTap: () {
+        Navigator.pushReplacementNamed(
+          context,
+          addEntryRoute,
+          arguments: AddEntryArgs(
+            formAction: FormAction.edit,
+            entry: entry,
           ),
-          Expanded(
-            flex: 1,
-            child: Align(
-              alignment: Alignment.centerRight,
-              child: Image.asset(
-                Mood.moodToEmoji(entry.mood),
-                height: 80,
-              ),
-            ),
-          )
-        ],
+        );
+      },
+      child: const CircleAvatar(
+        radius: 30,
+        backgroundColor: AppColors.primaryColor,
+        child: Icon(
+          Icons.mode_edit_rounded,
+          size: 35,
+          color: AppColors.appWhite,
+        ),
       ),
     );
   }

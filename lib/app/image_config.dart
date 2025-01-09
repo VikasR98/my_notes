@@ -5,3 +5,6 @@ const String laugh = image+'happy.png';
 const String cry = image+'sad.png';
 const String sad = image+'sigh.png';
 const String happy = image+'neutral.png';
+const String diaryNew = image+'diary_new.png';
+const String welcomeImageTwo = image+'welcome_img_two.png';
+const String welcomeImageThree = image+'welcome_img_three.png';

@@ -24,23 +24,30 @@ class NotesListBody extends StatelessWidget {
           child: Search(theme: theme),
         ),
         Expanded(
-          child: ListView.builder(
-            // reverse: true,
-            padding: Dimens.appScreenPaddingHorizontal(),
-            physics: const BouncingScrollPhysics(),
-            itemCount: viewModel.entries?.length ?? 0,
-            itemBuilder: (context, index) {
-              final data = viewModel.entries?[index];
-              return NotesListItem(
-                onTap: (){
-                  viewModel.onItemTap(context: context, entry: data);
-                },
-                title: data?.title ?? '',
-                subtitle: data?.description ?? '',
-                date: data?.dateTime ?? '',
-                mood: data?.mood ?? 0,
-              );
+          child: RefreshIndicator.adaptive(
+            color: Colors.red,
+            strokeWidth: 2,
+            onRefresh: () async {
+              viewModel.getAllEntries();
             },
+            child: ListView.builder(
+              // reverse: true,
+              padding: Dimens.appScreenPaddingHorizontal(),
+              physics: const BouncingScrollPhysics(),
+              itemCount: viewModel.entries?.length ?? 0,
+              itemBuilder: (context, index) {
+                final data = viewModel.entries?[index];
+                return NotesListItem(
+                  onTap: () {
+                    viewModel.onItemTap(context: context, entry: data);
+                  },
+                  title: data?.title ?? '',
+                  subtitle: data?.description ?? '',
+                  date: data?.dateTime ?? '',
+                  mood: data?.mood ?? 0,
+                );
+              },
+            ),
           ),
         )
       ],

@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:my_notes/constants/routes.dart';
@@ -33,6 +35,7 @@ class EntryListViewModel extends BaseViewModel {
             arguments: entry,
           ).then(
             (value) {
+              log('i am here view');
               getAllEntries();
             },
           );
@@ -50,6 +53,7 @@ class EntryListViewModel extends BaseViewModel {
               formAction: FormAction.edit,
             ),
           ).then((value) {
+            log('i am here edit');
             getAllEntries();
           });
         }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:my_notes/constants/routes.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({Key? key}) : super(key: key);
@@ -15,7 +16,7 @@ class _SplashScreenState extends State<SplashScreen> {
     Future.delayed(
       const Duration(seconds: 2),
       () {
-        Navigator.pushReplacementNamed(context, '/welcomeRoute');
+        Navigator.pushReplacementNamed(context, onboardingRoute);
       },
     );
   }

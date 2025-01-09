@@ -29,6 +29,7 @@ class AppButton extends StatelessWidget {
         btnText,
         style: Theme.of(context).textTheme.bodyLarge?.copyWith(
               fontWeight: FontWeight.bold,
+              fontSize: 18,
               color: AppColors.appWhite,
             ),
       ),

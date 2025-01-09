@@ -34,7 +34,7 @@ class EntryHeader extends StatelessWidget {
                     lastEditTime ?? '',
                     style: Theme.of(context).textTheme.titleMedium?.copyWith(
                           color: Colors.grey,
-                          fontSize: 20,
+                          fontSize: 16,
                         ),
                   ),
               )

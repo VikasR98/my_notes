@@ -1,24 +1,45 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:my_notes/constants/colors.dart';
 import 'package:my_notes/constants/dimes.dart';
+import 'package:my_notes/main.dart';
 import 'package:my_notes/screen/entryList/localWidgets/add_note_btn.dart';
 import 'package:my_notes/screen/entryList/localWidgets/notes_list_body.dart';
 import 'package:my_notes/screen/entryList/entry_list_viewmodel.dart';
 import 'package:stacked/stacked.dart';
 
-class NotesListView extends StatefulWidget {
-  const NotesListView({super.key});
+class EntryListView extends StatefulWidget {
+  const EntryListView({super.key});
 
   @override
-  State<NotesListView> createState() => _NotesListViewState();
+  State<EntryListView> createState() => _EntryListViewState();
 }
 
-class _NotesListViewState extends State<NotesListView> {
+class _EntryListViewState extends State<EntryListView> with RouteAware {
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    // This will be called both when first creating the widget and when returning to it
+    log("didChangeDependencies called");
+  }
+
+  @override
+  void didPopNext() {
+    super.didPopNext();
+    // This is called when returning to the current route after another route has been popped
+    log("didPopNext called");
+  }
+
   @override
   Widget build(BuildContext context) {
     Brightness theme = Theme.of(context).brightness;
     return ViewModelBuilder.reactive(
       onViewModelReady: (viewModel){
+        // Store the ViewModel in a local variable
+        // _viewModel = viewModel;
+        log('entry viewmodel');
         // viewModel.deleteDiaryEntry(id:11);
         viewModel.getAllEntries();
       },
