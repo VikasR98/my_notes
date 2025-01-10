@@ -23,6 +23,9 @@ class _SignInViewState extends State<SignInView> {
   @override
   Widget build(BuildContext context) {
     return ViewModelBuilder.reactive(
+      onViewModelReady: (viewModel){
+        // viewModel.displayUserProfile();
+      },
         viewModelBuilder: () => SignInViewModel(),
         builder: (context, viewModel, child) {
           return Scaffold(
@@ -109,14 +112,11 @@ class _SignInViewState extends State<SignInView> {
                           ? AppColors.primaryColor
                           : AppColors.accentColorFifty,
                       onTap: () {
-                        // if (_formKey.currentState!.validate()) {
-                        Navigator.of(context).pushNamedAndRemoveUntil(
-                          entryListRoute,
-                          (route) => false,
-                        );
-                        // } else {
-                        //   viewModel.formAutoValidate = AutovalidateMode.always;
-                        // }
+                        if (_formKey.currentState!.validate()) {
+                        viewModel.checkUserLogin( context);
+                        } else {
+                          viewModel.formAutoValidate = AutovalidateMode.always;
+                        }
                       },
                       btnText: 'Sign In',
                     )

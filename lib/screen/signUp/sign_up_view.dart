@@ -135,7 +135,8 @@ class _SignUpViewState extends State<SignUpView> {
                                 : AppColors.accentColorFifty,
                             onTap: () {
                               if (_formKey.currentState!.validate()) {
-                                viewModel.userRegistered = true;
+                               viewModel.registerUser();
+
                               } else {
                                 viewModel.validateMode =
                                     AutovalidateMode.always;

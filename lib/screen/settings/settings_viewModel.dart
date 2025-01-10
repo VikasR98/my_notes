@@ -1,6 +1,9 @@
 import 'dart:async';
+import 'dart:developer';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:my_notes/constants/colors.dart';
 import 'package:stacked/stacked.dart';
 
@@ -21,6 +24,29 @@ class SettingsViewModel extends BaseViewModel {
   set bioMatricSwitchVal(bool value) {
     _bioMatricSwitchVal = value;
     notifyListeners();
+  }
+
+  File ? _profileImage;
+
+  File? get profileImage => _profileImage;
+
+  set profileImage(File? value) {
+    _profileImage = value;
+    notifyListeners();
+  }
+
+  void pickImage() async {
+    final picker = ImagePicker();
+    final pickedFile = await picker.pickImage(source: ImageSource.gallery);
+
+    if (pickedFile != null) {
+      // setState(() {
+        _profileImage = File(pickedFile.path);
+        notifyListeners();
+      // });
+    } else {
+      log('No image selected.');
+    }
   }
 
   bool _syncAutoSwitchVal = false;

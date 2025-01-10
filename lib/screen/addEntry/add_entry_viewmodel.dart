@@ -14,7 +14,7 @@ class AddEntryViewModel extends BaseViewModel {
   FormAction? formAction = FormAction.add;
 
   insertNewEntry({required DiaryEntry entry, required context}) async {
-    int id = await dbHelper.insertDiaryEntry(entry);
+    // int id = await dbHelper.insertDiaryEntry(entry);
     if (kDebugMode) {
       print('Inserted entry with ID: $id');
     }
@@ -45,17 +45,14 @@ class AddEntryViewModel extends BaseViewModel {
   }
 
   updateEntry({required DiaryEntry entry, required context}) async {
-    await dbHelper.updateDiaryEntry(entry);
+    // await dbHelper.updateDiaryEntry(entry);
     titleController.clear();
     descriptionController.clear();
     selectedValue = 0;
     Navigator.pop(context);
   }
 
-  deleteEntry(int id) async {
-    // Delete an entry
-    await dbHelper.deleteDiaryEntry(id);
-  }
+
 
   String? _lastEditTime;
 

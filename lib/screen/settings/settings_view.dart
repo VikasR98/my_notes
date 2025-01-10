@@ -7,6 +7,7 @@ import 'package:my_notes/constants/strings.dart';
 import 'package:my_notes/screen/settings/settings_viewModel.dart';
 import 'package:my_notes/screen/settings/widget/app_switch_widget.dart';
 import 'package:my_notes/screen/settings/widget/settings_row_widget.dart';
+import 'package:my_notes/widgets/app_image_picker.dart';
 import 'package:my_notes/widgets/default_appbar_leading.dart';
 import 'package:my_notes/widgets/default_appbar_title.dart';
 import 'package:stacked/stacked.dart';
@@ -52,16 +53,33 @@ class _SettingsViewState extends State<SettingsView> {
                         child: Column(
                           children: [
                             SettingsRow(
-                              onTap: () {},
+                              onTap: () {
+                                viewModel.pickImage();
+                                // Navigator.push(
+                                //     context,
+                                //     MaterialPageRoute(
+                                //         builder: (_) => ImagePickerExample()));
+                              },
                               label: changeProfileImageString,
-                              icon: const CircleAvatar(
+                              icon: CircleAvatar(
                                 backgroundColor: AppColors.iconBgColor,
                                 radius: 25,
-                                child: Icon(
-                                  Icons.person,
-                                  color: AppColors.appWhite,
-                                  size: 35,
-                                ),
+                                child: viewModel.profileImage != null
+                                    ? ClipRRect(
+                                        borderRadius: const BorderRadius.all(
+                                          Radius.circular(50),
+                                        ),
+                                        child: Image.file(
+                                          viewModel.profileImage!,
+                                          width: 35,
+                                          height: 35,
+                                          fit: BoxFit.cover,
+                                        ),
+                                      )
+                                    : const Icon(
+                                        Icons.person,
+                                        size: 35,
+                                      ),
                               ),
                             ),
                             SettingsRow(

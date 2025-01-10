@@ -78,13 +78,14 @@ class EntryListViewModel extends BaseViewModel {
   }
 
   getAllEntries() async {
-    entries = await dbHelper.getDiaryEntries();
+    // entries = await dbHelper.getDiaryEntries();
     entries = entries?.reversed.cast<DiaryEntry>().toList();
     notifyListeners();
 
     for (var entry in entries!) {
       print(
-          '${entry.id} - ${entry.title} - ${Mood.moodToEmoji(entry.mood)} at ${entry.dateTime}');
+        '${entry.id} - ${entry.title} - ${Mood.moodToEmoji(entry.mood)} at ${entry.dateTime}',
+      );
     }
   }
 
@@ -106,7 +107,7 @@ class EntryListViewModel extends BaseViewModel {
   }
 
   deleteDiaryEntry({required int id}) async {
-    await dbHelper.deleteDiaryEntry(id);
+    // await dbHelper.deleteDiaryEntry(id);
     getAllEntries();
   }
 }
