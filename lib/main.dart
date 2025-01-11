@@ -13,12 +13,14 @@ import 'package:my_notes/screen/signUp/sign_up_view.dart';
 import 'package:my_notes/screen/splash_screen.dart';
 import 'package:my_notes/screen/viewEntry/view_entry_view.dart';
 import 'package:my_notes/screen/welcomeScreen/welcome_screen_view.dart';
+import 'package:my_notes/service/locator.dart';
 
-void main() {
+void main() async{
   WidgetsFlutterBinding.ensureInitialized();
 
   // Add a new entry
-
+  // Initialize and register services
+  await setupLocator();
   runApp(const MyApp());
 }
 

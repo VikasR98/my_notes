@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:my_notes/constants/routes.dart';
+import 'package:my_notes/service/locator.dart';
+import 'package:my_notes/service/shared_prefs_service.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({Key? key}) : super(key: key);
@@ -13,10 +15,20 @@ class _SplashScreenState extends State<SplashScreen> {
   void initState() {
     // TODO: implement initState
     super.initState();
+    goToNextRoute();
+  }
+
+  void goToNextRoute() {
     Future.delayed(
       const Duration(seconds: 2),
       () {
-        Navigator.pushReplacementNamed(context, onboardingRoute);
+        if (locator<SharedPreferencesService>().getUserId() != null) {
+          Navigator.pushReplacementNamed(context, entryListRoute);
+
+        }else{
+          Navigator.pushReplacementNamed(context, onboardingRoute);
+
+        }
       },
     );
   }

@@ -24,6 +24,9 @@ class _SettingsViewState extends State<SettingsView> {
   Widget build(BuildContext context) {
     Brightness theme = Theme.of(context).brightness;
     return ViewModelBuilder.reactive(
+      onViewModelReady: (viewModel)async{
+        viewModel.setProfileImage();
+      },
         viewModelBuilder: () => SettingsViewModel(),
         builder: (context, viewModel, child) {
           return Scaffold(
@@ -144,20 +147,32 @@ class _SettingsViewState extends State<SettingsView> {
                           alignment: Alignment.center,
                           child: GestureDetector(
                             onTap: () {
-                              Navigator.pushNamed(context, signInRoute);
+                              viewModel.logout(context);
                             },
-                            child: Text(
-                              logoutString,
-                              style: context.titleLarge?.copyWith(
-                                fontWeight: FontWeight.bold,
-                                color: AppColors.primaryColor,
+                            child: Container(
+                              color: Colors.amber,
+                              child: Text(
+                                logoutString,
+                                style: context.titleLarge?.copyWith(
+                                  fontWeight: FontWeight.bold,
+                                  color: AppColors.primaryColor,
+                                ),
                               ),
                             ),
                           ),
                         ),
                       ],
                     ),
-                  )
+                  ),
+                  if(viewModel.isBusy)
+                  const Center(
+                    child: CircularProgressIndicator.adaptive(
+                      backgroundColor: AppColors.primaryColor,
+                      strokeWidth: 10,
+                      valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                      // value: 1,
+                    ),
+                  ),
                 ],
               ),
             ),

@@ -173,7 +173,9 @@ import 'package:my_notes/model/data_entry.dart';
 
 class DatabaseHelper {
   static final DatabaseHelper _instance = DatabaseHelper._internal();
+
   factory DatabaseHelper() => _instance;
+
   DatabaseHelper._internal();
 
   static Database? _database;
@@ -245,8 +247,8 @@ class DatabaseHelper {
   // Fetch all diary entries for a specific user
   Future<List<DiaryEntry>> getDiaryEntries(int userId) async {
     final db = await database;
-    final List<Map<String, dynamic>> maps =
-    await db.query('diary_entries', where: 'user_id = ?', whereArgs: [userId]);
+    final List<Map<String, dynamic>> maps = await db
+        .query('diary_entries', where: 'user_id = ?', whereArgs: [userId]);
 
     return List.generate(maps.length, (i) {
       return DiaryEntry.fromMap(maps[i]);
@@ -267,11 +269,12 @@ class DatabaseHelper {
   // Delete a diary entry
   Future<int> deleteDiaryEntry(int id, int userId) async {
     final db = await database;
-    return await db.delete('diary_entries', where: 'id = ? AND user_id = ?', whereArgs: [id, userId]);
+    return await db.delete('diary_entries',
+        where: 'id = ? AND user_id = ?', whereArgs: [id, userId]);
   }
 
   // Save or update user profile information
-  Future<void> saveUserProfile({
+  Future<void> registerUser({
     required String name,
     required String email,
     required String password,
@@ -286,7 +289,8 @@ class DatabaseHelper {
       await imageFile.copy(newImagePath);
     }
 
-    final List<Map<String, dynamic>> result = await db.query('user_profile', where: 'email = ?', whereArgs: [email]);
+    final List<Map<String, dynamic>> result =
+        await db.query('user_profile', where: 'email = ?', whereArgs: [email]);
 
     if (result.isEmpty) {
       await db.insert('user_profile', {
@@ -295,22 +299,51 @@ class DatabaseHelper {
         'password': password,
         'profile_image_path': newImagePath
       });
-    } else {
-      await db.update(
-        'user_profile',
-        {
-          'name': name,
-          'password': password,
-          if (newImagePath != null) 'profile_image_path': newImagePath,
-        },
-        where: 'email = ?',
-        whereArgs: [email],
-      );
     }
+    // else {
+    //   await db.update(
+    //     'user_profile',
+    //     {
+    //       'name': name,
+    //       'password': password,
+    //       if (newImagePath != null) 'profile_image_path': newImagePath,
+    //     },
+    //     where: 'email = ?',
+    //     whereArgs: [email],
+    //   );
+    // }
   }
 
-  // Check if user exists by email and password
-  Future<int?> checkUserExistence({required String email, required String password}) async {
+  // update user
+  Future<int?> updateUser({
+    required String name,
+    required String email,
+    required String password,
+    File? imageFile,
+  }) async {
+    final db = await database;
+
+    String? newImagePath;
+    if (imageFile != null) {
+      final directory = await getApplicationDocumentsDirectory();
+      newImagePath = join(directory.path, basename(imageFile.path));
+      await imageFile.copy(newImagePath);
+    }
+
+    return await db.update(
+      'user_profile',
+      {
+        'name': name,
+        'password': password,
+        if (newImagePath != null) 'profile_image_path': newImagePath,
+      },
+      where: 'email = ?',
+      whereArgs: [email],
+    );
+  }
+
+  // login  user by email and password
+  Future<int?> login({required String email, required String password}) async {
     final db = await database;
 
     final List<Map<String, dynamic>> result = await db.query(
@@ -323,6 +356,17 @@ class DatabaseHelper {
       return result.first['id'] as int; // Return user ID if found
     }
     return null;
+  }
+
+  // check user existence by email
+  Future<bool> checkUserExistence({required String email}) async {
+    final db = await database;
+    final List<Map<String, dynamic>> result = await db.query(
+      'user_profile',
+      where: 'email = ?',
+      whereArgs: [email],
+    );
+    return result.isNotEmpty;
   }
 
   // Retrieve user profile by ID

@@ -3,8 +3,13 @@ import 'dart:developer';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:my_notes/constants/colors.dart';
+import 'package:my_notes/constants/routes.dart';
+import 'package:my_notes/databse_helper/data_base_helper.dart';
+import 'package:my_notes/service/locator.dart';
+import 'package:my_notes/service/shared_prefs_service.dart';
 import 'package:stacked/stacked.dart';
 
 class SettingsViewModel extends BaseViewModel {
@@ -26,7 +31,7 @@ class SettingsViewModel extends BaseViewModel {
     notifyListeners();
   }
 
-  File ? _profileImage;
+  File? _profileImage;
 
   File? get profileImage => _profileImage;
 
@@ -36,13 +41,15 @@ class SettingsViewModel extends BaseViewModel {
   }
 
   void pickImage() async {
+    getUserProfile();
     final picker = ImagePicker();
     final pickedFile = await picker.pickImage(source: ImageSource.gallery);
 
     if (pickedFile != null) {
       // setState(() {
-        _profileImage = File(pickedFile.path);
-        notifyListeners();
+      updateUserProfileImage();
+      _profileImage = File(pickedFile.path);
+      notifyListeners();
       // });
     } else {
       log('No image selected.');
@@ -60,7 +67,7 @@ class SettingsViewModel extends BaseViewModel {
 
   getTrackOutLineColor(bool value) {
     if (value == false) {
-      return MaterialStateProperty.all(
+      return WidgetStateProperty.all(
         AppColors.inactiveSwitchTrackColor,
       );
     }
@@ -71,7 +78,7 @@ class SettingsViewModel extends BaseViewModel {
 
   getThumbColor(final theme) {
     if (theme == Brightness.light) {
-      return MaterialStateProperty.all(
+      return WidgetStateProperty.all(
         AppColors.appWhite,
       );
     }
@@ -119,6 +126,77 @@ class SettingsViewModel extends BaseViewModel {
         Icons.check,
         size: 30,
       );
+    }
+  }
+
+  final sharedPrefs = locator<SharedPreferencesService>();
+
+  void logout(BuildContext context) async {
+    setBusy(true);
+    bool isCleared = await sharedPrefs.clearSharedPreferences();
+    setBusy(false);
+    if (isCleared) {
+      if (context.mounted) {
+        Navigator.pushReplacementNamed(context, welcomeRoute);
+      }
+    } else {
+      Fluttertoast.showToast(
+          msg: "Logout process incomplete. Please try again.");
+    }
+  }
+
+  final dbHelper = DatabaseHelper();
+
+  Future<Map<String, dynamic>?> getUserProfile() async {
+    return await dbHelper.getUserProfile(sharedPrefs.getUserId() ?? 0);
+  }
+
+  // updateUserProfileImage() async {
+
+  setProfileImage() async {
+    final Map<String, dynamic>? userProfile =
+    await dbHelper.getUserProfile((sharedPrefs.getUserId() ?? 0));
+    if (userProfile == null) {
+      throw Exception('User profile not found');
+    }
+
+    if (userProfile['profile_image_path'] != null) {
+      profileImage = File(userProfile['profile_image_path']);
+    }
+  }
+
+  Future<void> updateUserProfileImage() async {
+    try {
+      // Fetch user profile
+      final userId = sharedPrefs.getUserId() ?? 0;
+      if (userId == 0) {
+        throw Exception('Invalid user ID');
+      }
+
+      final Map<String, dynamic>? userProfile =
+          await dbHelper.getUserProfile(userId);
+      if (userProfile == null) {
+        throw Exception('User profile not found');
+      }
+
+
+
+      // Update user profile
+      int? updatedId = await dbHelper.updateUser(
+        name: userProfile['name'],
+        email: userProfile['email'],
+        imageFile: profileImage,
+        password: userProfile['password'],
+      );
+
+      if (updatedId != null) {
+        Fluttertoast.showToast(msg: "Profile image updated successfully");
+        log('User profile updated successfully for ID: $updatedId');
+      } else {
+        log('Failed to update user profile.');
+      }
+    } catch (e) {
+      log('Error updating user profile image: $e');
     }
   }
 }

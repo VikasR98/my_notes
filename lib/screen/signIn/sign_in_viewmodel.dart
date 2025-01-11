@@ -1,11 +1,14 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:my_notes/constants/routes.dart';
 import 'package:my_notes/databse_helper/data_base_helper.dart';
+import 'package:my_notes/service/locator.dart';
+import 'package:my_notes/service/shared_prefs_service.dart';
 import 'package:stacked/stacked.dart';
 
-class SignInViewModel extends BaseViewModel{
+class SignInViewModel extends BaseViewModel {
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   bool? _show = true;
@@ -32,7 +35,7 @@ class SignInViewModel extends BaseViewModel{
 
   isMailValid() {
     final bool emailValid = RegExp(
-        r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+            r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
         .hasMatch(emailController.text.trim());
     return emailValid;
   }
@@ -56,7 +59,6 @@ class SignInViewModel extends BaseViewModel{
   }
 
   isAllValueFilled() {
-
     if (emailController.text.isEmpty) {
       allValComplete = false;
       return;
@@ -68,41 +70,57 @@ class SignInViewModel extends BaseViewModel{
     allValComplete = true;
     return;
   }
-  Future<void> checkUserLogin( context,) async {
-    int? userExists = await DatabaseHelper().checkUserExistence(
-      email: emailController.text.trim(),
-      password: passwordController.text.trim(),
-    );
 
-    if (userExists!=null) {
-      print("User exists. Proceed with login.");
-      Navigator.of(context).pushNamedAndRemoveUntil(
-        entryListRoute,
-            (route) => false,
+  Future<bool> isUser() async {
+    return await DatabaseHelper().checkUserExistence(
+      email: emailController.text.trim(),
+    );
+  }
+
+  final sharedPrefs = locator<SharedPreferencesService>();
+
+  Future<void> login(
+    context,
+  ) async {
+    if (await isUser()) {
+      int? isUserId = await DatabaseHelper().login(
+        email: emailController.text.trim(),
+        password: passwordController.text.trim(),
       );
+
+      if (isUserId != null) {
+        sharedPrefs.setUserId(isUserId);
+
+        Navigator.of(context).pushNamedAndRemoveUntil(
+          entryListRoute,
+          (route) => false,
+        );
+      } else {
+        Fluttertoast.showToast(msg: "Invalid credentials");
+      }
     } else {
-      print("Invalid credentials. Please try again.");
+      Fluttertoast.showToast(msg: "Email does not exist");
     }
   }
-  // import 'dart:io';
+// import 'dart:io';
 
-  // Future<void> displayUserProfile() async {
-  //   final userProfile = await DatabaseHelper().getUserProfile();
-  //
-  //   if (userProfile != null) {
-  //     print("Name: ${userProfile['name']}");
-  //     print("Email: ${userProfile['email']}");
-  //     print("pass: ${userProfile['password']}");
-  //
-  //     String? imagePath = userProfile['profile_image_path'];
-  //     if (imagePath != null && File(imagePath).existsSync()) {
-  //       // Use Image.file to display the profile image
-  //       // return Image.file(File(imagePath));
-  //     } else {
-  //       print("No profile image found.");
-  //     }
-  //   } else {
-  //     print("No user profile found.");
-  //   }
-  // }
+// Future<void> displayUserProfile() async {
+//   final userProfile = await DatabaseHelper().getUserProfile();
+//
+//   if (userProfile != null) {
+//     print("Name: ${userProfile['name']}");
+//     print("Email: ${userProfile['email']}");
+//     print("pass: ${userProfile['password']}");
+//
+//     String? imagePath = userProfile['profile_image_path'];
+//     if (imagePath != null && File(imagePath).existsSync()) {
+//       // Use Image.file to display the profile image
+//       // return Image.file(File(imagePath));
+//     } else {
+//       print("No profile image found.");
+//     }
+//   } else {
+//     print("No user profile found.");
+//   }
+// }
 }

@@ -10,10 +10,14 @@ import 'package:my_notes/model/data_entry.dart';
 import 'package:my_notes/model/mood_mapping.dart';
 import 'package:my_notes/screen/addEntry/add_entry_view.dart';
 import 'package:my_notes/screen/entryList/localWidgets/notes_list_dialog.dart';
+import 'package:my_notes/service/locator.dart';
+import 'package:my_notes/service/shared_prefs_service.dart';
 import 'package:stacked/stacked.dart';
+import 'package:stacked/stacked_annotations.dart';
 
 class EntryListViewModel extends BaseViewModel {
   final dbHelper = DatabaseHelper();
+  final sharedPrefs = locator<SharedPreferencesService>();
 
   onItemTap({
     required BuildContext context,
@@ -78,15 +82,9 @@ class EntryListViewModel extends BaseViewModel {
   }
 
   getAllEntries() async {
-    // entries = await dbHelper.getDiaryEntries();
+    entries = await dbHelper.getDiaryEntries(sharedPrefs.getUserId() ?? 0);
     entries = entries?.reversed.cast<DiaryEntry>().toList();
     notifyListeners();
-
-    for (var entry in entries!) {
-      print(
-        '${entry.id} - ${entry.title} - ${Mood.moodToEmoji(entry.mood)} at ${entry.dateTime}',
-      );
-    }
   }
 
   goToEditEntry({
@@ -107,7 +105,6 @@ class EntryListViewModel extends BaseViewModel {
   }
 
   deleteDiaryEntry({required int id}) async {
-    // await dbHelper.deleteDiaryEntry(id);
     getAllEntries();
   }
 }

@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:my_notes/app/image_config.dart';
 import 'package:my_notes/constants/colors.dart';
@@ -24,6 +26,7 @@ class _SignUpViewState extends State<SignUpView> {
 
   @override
   Widget build(BuildContext context) {
+    double statusBarHeight = MediaQuery.of(context).padding.top;
     return ViewModelBuilder.reactive(
         viewModelBuilder: () => SignUpViewModel(),
         builder: (context, viewModel, child) {
@@ -31,121 +34,126 @@ class _SignUpViewState extends State<SignUpView> {
             body: SingleChildScrollView(
               child: viewModel.userRegistered == true
                   ? const UserRegisteredSuccessView()
-                  : SizedBox(
-                      // color: Colors.amber,
-                      width: MediaQuery.of(context).size.width,
-                      height: MediaQuery.of(context).size.height,
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
-                          Column(
+                  : Stack(
+                      children: [
+                        SizedBox(
+                          width: MediaQuery.of(context).size.width,
+                          height: MediaQuery.of(context).size.height,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
                             children: [
-                              const AppLogoAsset(),
-                              Text(
-                                'Sign Up',
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .headlineLarge
-                                    ?.copyWith(
-                                      fontWeight: FontWeight.w900,
-                                    ),
+                              Column(
+                                children: [
+                                  const AppLogoAsset(),
+                                  Text(
+                                    'Sign Up',
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .headlineLarge
+                                        ?.copyWith(
+                                          fontWeight: FontWeight.w900,
+                                        ),
+                                  ),
+                                ],
                               ),
+                              Form(
+                                  autovalidateMode: viewModel.validateMode,
+                                  key: _formKey,
+                                  child: Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 30.0),
+                                    child: Column(
+                                      children: [
+                                        AppTextFormFieldNew(
+                                          inputFormatters: [
+                                            Dimens().alphabeticFormatter
+                                          ],
+                                          label: 'Name',
+                                          textEditingController:
+                                              viewModel.nameController,
+                                          onChanged: (String value) {
+                                            viewModel.isAllValueFilled();
+                                          },
+                                          validator: (String? value) {
+                                            if (value == null ||
+                                                value.length <= 3) {
+                                              return 'Characters must be more than 3';
+                                            }
+                                            return null;
+                                          },
+                                        ),
+                                        verticalSpace(20),
+                                        AppTextFormFieldNew(
+                                          label: 'Email Address',
+                                          textEditingController:
+                                              viewModel.emailController,
+                                          onChanged: (String value) {
+                                            viewModel.isAllValueFilled();
+                                          },
+                                          validator: (String? value) {
+                                            if (value == null ||
+                                                !viewModel.isMailValid()) {
+                                              return 'Invalid email id';
+                                            }
+                                            return null;
+                                          },
+                                        ),
+                                        verticalSpace(20),
+                                        AppTextFormFieldNew(
+                                          label: 'Password',
+                                          obscureText: obscure,
+                                          onChanged: (String value) {
+                                            viewModel.isAllValueFilled();
+                                          },
+                                          validator: (String? value) {
+                                            if (value == null ||
+                                                value.length <= 6) {
+                                              return 'Password must be more than 6';
+                                            }
+                                            return null;
+                                          },
+                                          textEditingController:
+                                              viewModel.passwordController,
+                                          suffixIcon: GestureDetector(
+                                            onTap: () {
+                                              setState(() {
+                                                obscure = !obscure;
+                                              });
+                                            },
+                                            child: Icon(
+                                              Icons.remove_red_eye,
+                                              color: obscure == true
+                                                  ? Colors.grey
+                                                  : AppColors.primaryColor,
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  )),
+                              AppButton(
+                                bgColor: viewModel.allValComplete
+                                    ? AppColors.primaryColor
+                                    : AppColors.accentColorFifty,
+                                onTap: () {
+                                  if (_formKey.currentState!.validate()) {
+                                    viewModel.registerUser();
+                                  } else {
+                                    viewModel.validateMode =
+                                        AutovalidateMode.always;
+                                  }
+                                },
+                                btnText: 'Sign Up',
+                              )
                             ],
                           ),
-                          Form(
-                              autovalidateMode: viewModel.validateMode,
-                              key: _formKey,
-                              child: Padding(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 30.0),
-                                child: Column(
-                                  children: [
-                                    AppTextFormFieldNew(
-                                      inputFormatters: [
-                                        Dimens().alphabeticFormatter
-                                      ],
-                                      label: 'Name',
-                                      textEditingController:
-                                          viewModel.nameController,
-                                      onChanged: (String value) {
-                                        viewModel.isAllValueFilled();
-                                      },
-                                      validator: (String? value) {
-                                        if (value == null ||
-                                            value.length <= 3) {
-                                          return 'Characters must be more than 3';
-                                        }
-                                        return null;
-                                      },
-                                    ),
-                                    verticalSpace(20),
-                                    AppTextFormFieldNew(
-                                      label: 'Email Address',
-                                      textEditingController:
-                                          viewModel.emailController,
-                                      onChanged: (String value) {
-                                        viewModel.isAllValueFilled();
-                                      },
-                                      validator: (String? value) {
-                                        if (value == null ||
-                                            !viewModel.isMailValid()) {
-                                          return 'Invalid email id';
-                                        }
-                                        return null;
-                                      },
-                                    ),
-                                    verticalSpace(20),
-                                    AppTextFormFieldNew(
-                                      label: 'Password',
-                                      obscureText: obscure,
-                                      onChanged: (String value) {
-                                        viewModel.isAllValueFilled();
-                                      },
-                                      validator: (String? value) {
-                                        if (value == null ||
-                                            value.length <= 6) {
-                                          return 'Password must be more than 6';
-                                        }
-                                        return null;
-                                      },
-                                      textEditingController:
-                                          viewModel.passwordController,
-                                      suffixIcon: GestureDetector(
-                                        onTap: () {
-                                          setState(() {
-                                            obscure = !obscure;
-                                          });
-                                        },
-                                        child: Icon(
-                                          Icons.remove_red_eye,
-                                          color: obscure == true
-                                              ? Colors.grey
-                                              : AppColors.primaryColor,
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              )),
-
-                          // Spacer(),
-                          AppButton(
-                            bgColor: viewModel.allValComplete
-                                ? AppColors.primaryColor
-                                : AppColors.accentColorFifty,
-                            onTap: () {
-                              if (_formKey.currentState!.validate()) {
-                               viewModel.registerUser();
-
-                              } else {
-                                viewModel.validateMode =
-                                    AutovalidateMode.always;
-                              }
-                            },
-                            btnText: 'Sign Up',
-                          )
-                        ],
-                      ),
+                        ),
+                        Positioned(
+                          top: statusBarHeight + 10,
+                          left: 10,
+                          child: const BackButton(),
+                        ),
+                      ],
                     ),
             ),
           );

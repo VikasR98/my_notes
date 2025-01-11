@@ -4,17 +4,21 @@ import 'package:intl/intl.dart';
 import 'package:my_notes/databse_helper/data_base_helper.dart';
 import 'package:my_notes/enum/form_action.dart';
 import 'package:my_notes/model/data_entry.dart';
+import 'package:my_notes/service/locator.dart';
+import 'package:my_notes/service/shared_prefs_service.dart';
 import 'package:stacked/stacked.dart';
 
 class AddEntryViewModel extends BaseViewModel {
   TextEditingController titleController = TextEditingController();
   TextEditingController descriptionController = TextEditingController();
+  final sharedPrefsService = locator<SharedPreferencesService>();
   final dbHelper = DatabaseHelper();
 
   FormAction? formAction = FormAction.add;
 
   insertNewEntry({required DiaryEntry entry, required context}) async {
-    // int id = await dbHelper.insertDiaryEntry(entry);
+    int id = await dbHelper.insertDiaryEntry(
+        entry, sharedPrefsService.getUserId() ?? 0);
     if (kDebugMode) {
       print('Inserted entry with ID: $id');
     }
@@ -45,14 +49,12 @@ class AddEntryViewModel extends BaseViewModel {
   }
 
   updateEntry({required DiaryEntry entry, required context}) async {
-    // await dbHelper.updateDiaryEntry(entry);
+    await dbHelper.updateDiaryEntry(entry, sharedPrefsService.getUserId() ?? 0);
     titleController.clear();
     descriptionController.clear();
     selectedValue = 0;
     Navigator.pop(context);
   }
-
-
 
   String? _lastEditTime;
 
@@ -92,6 +94,4 @@ class AddEntryViewModel extends BaseViewModel {
     _fontStyle = value;
     notifyListeners();
   }
-
-
 }
