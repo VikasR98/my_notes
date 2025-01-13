@@ -22,7 +22,7 @@ class _EntryListViewState extends State<EntryListView> with RouteAware {
   void didChangeDependencies() {
     super.didChangeDependencies();
     // This will be called both when first creating the widget and when returning to it
-    log("didChangeDependencies called");
+    log("didChangeDependencies called entry list");
   }
 
   @override

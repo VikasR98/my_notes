@@ -8,14 +8,18 @@ import 'package:my_notes/screen/addEntry/add_entry_view.dart';
 import 'package:my_notes/screen/entryList/entry_list_view.dart';
 import 'package:my_notes/screen/pin_screen/pin_screen_view.dart';
 import 'package:my_notes/screen/settings/settings_view.dart';
+import 'package:my_notes/screen/settings/settings_viewModel.dart';
 import 'package:my_notes/screen/signIn/sign_in_view.dart';
 import 'package:my_notes/screen/signUp/sign_up_view.dart';
 import 'package:my_notes/screen/splash_screen.dart';
 import 'package:my_notes/screen/viewEntry/view_entry_view.dart';
 import 'package:my_notes/screen/welcomeScreen/welcome_screen_view.dart';
 import 'package:my_notes/service/locator.dart';
-
-void main() async{
+import 'package:my_notes/service/shared_prefs_service.dart';
+import 'package:my_notes/theme_demo/theme_provider.dart';
+import 'package:stacked/stacked.dart';
+import 'package:provider/provider.dart';
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   // Add a new entry
@@ -32,34 +36,43 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
+  late bool _isDarkTheme;
+
   @override
   void initState() {
     super.initState();
+    _isDarkTheme = locator<SharedPreferencesService>().getDarkTheme() ?? false;
   }
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      debugShowCheckedModeBanner: false,
-      theme: lightTheme,
-      darkTheme: darkTheme,
-      initialRoute: '/',
+    return ChangeNotifierProvider(create: (_) => ThemeProvider(),
+    child: Builder(builder: (context){
+      final themeProvider = Provider.of<ThemeProvider>(context);
+      return MaterialApp(
+        title: 'Flutter Demo',
+        debugShowCheckedModeBanner: false,
+        theme: lightTheme,
+        darkTheme: darkTheme,
+        initialRoute: '/',
+        themeMode: themeProvider.isDarkTheme?ThemeMode.dark:ThemeMode.light,
 
-      routes: {
-        '/': (context) => const SplashScreen(),
-        welcomeRoute: (context) => const WelcomeScreenView(),
-        signUpRoute: (context) => const SignUpView(),
-        signInRoute: (context) => const SignInView(),
-       entryListRoute : (context) => const EntryListView(),
-        settingsRoute: (context) => const SettingsView(),
-        pinScreenRoute: (_) => const PinScreenView(),
-        addEntryRoute: (_) => const AddEntryView(),
-        viewEntryRoute:(_)=> const ViewEntryView(),
-        onboardingRoute:(_)=>const OnboardingView(),
-
-      },
-      // home: const FigmaToLottie(),
+        routes: {
+          '/': (context) => const SplashScreen(),
+          welcomeRoute: (context) => const WelcomeScreenView(),
+          signUpRoute: (context) => const SignUpView(),
+          signInRoute: (context) => const SignInView(),
+          entryListRoute: (context) => const EntryListView(),
+          settingsRoute: (context) => const SettingsView(),
+          pinScreenRoute: (_) => const PinScreenView(),
+          addEntryRoute: (_) => const AddEntryView(),
+          viewEntryRoute: (_) => const ViewEntryView(),
+          onboardingRoute: (_) => const OnboardingView(),
+        },
+        // home: const FigmaToLottie(),
+      );
+    }),
     );
   }
 }
+

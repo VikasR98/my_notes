@@ -7,9 +7,11 @@ import 'package:my_notes/constants/strings.dart';
 import 'package:my_notes/screen/settings/settings_viewModel.dart';
 import 'package:my_notes/screen/settings/widget/app_switch_widget.dart';
 import 'package:my_notes/screen/settings/widget/settings_row_widget.dart';
+import 'package:my_notes/theme_demo/theme_provider.dart';
 import 'package:my_notes/widgets/app_image_picker.dart';
 import 'package:my_notes/widgets/default_appbar_leading.dart';
 import 'package:my_notes/widgets/default_appbar_title.dart';
+import 'package:provider/provider.dart';
 import 'package:stacked/stacked.dart';
 
 class SettingsView extends StatefulWidget {
@@ -22,11 +24,12 @@ class SettingsView extends StatefulWidget {
 class _SettingsViewState extends State<SettingsView> {
   @override
   Widget build(BuildContext context) {
-    Brightness theme = Theme.of(context).brightness;
+    final themeProvider = Provider.of<ThemeProvider>(context);
     return ViewModelBuilder.reactive(
-      onViewModelReady: (viewModel)async{
-        viewModel.setProfileImage();
-      },
+        disposeViewModel: false,
+        onViewModelReady: (viewModel) async {
+          viewModel.setProfileImage();
+        },
         viewModelBuilder: () => SettingsViewModel(),
         builder: (context, viewModel, child) {
           return Scaffold(
@@ -58,10 +61,6 @@ class _SettingsViewState extends State<SettingsView> {
                             SettingsRow(
                               onTap: () {
                                 viewModel.pickImage();
-                                // Navigator.push(
-                                //     context,
-                                //     MaterialPageRoute(
-                                //         builder: (_) => ImagePickerExample()));
                               },
                               label: changeProfileImageString,
                               icon: CircleAvatar(
@@ -88,9 +87,12 @@ class _SettingsViewState extends State<SettingsView> {
                             SettingsRow(
                               label: darkModeString,
                               icon: AppSwitchWidget(
-                                value: viewModel.darkModeSwitchVal,
-                                onChanged: (bool? val) {
-                                  viewModel.darkModeSwitchVal = val ?? true;
+                                value: themeProvider.isDarkTheme,
+                                onChanged: (bool? value) {
+                                  if (value != null) {
+                                    themeProvider.toggleTheme(value);
+                                  }
+                                  // viewModel.toggleTheme(value!);
                                 },
                               ),
                             ),
@@ -143,14 +145,14 @@ class _SettingsViewState extends State<SettingsView> {
                       mainAxisSize: MainAxisSize.max,
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Align(
-                          alignment: Alignment.center,
-                          child: GestureDetector(
-                            onTap: () {
-                              viewModel.logout(context);
-                            },
-                            child: Container(
-                              color: Colors.amber,
+                        Container(
+                          color: Colors.amber,
+                          child: Align(
+                            alignment: Alignment.center,
+                            child: GestureDetector(
+                              onTap: () {
+                                viewModel.logout(context);
+                              },
                               child: Text(
                                 logoutString,
                                 style: context.titleLarge?.copyWith(
@@ -164,15 +166,15 @@ class _SettingsViewState extends State<SettingsView> {
                       ],
                     ),
                   ),
-                  if(viewModel.isBusy)
-                  const Center(
-                    child: CircularProgressIndicator.adaptive(
-                      backgroundColor: AppColors.primaryColor,
-                      strokeWidth: 10,
-                      valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
-                      // value: 1,
+                  if (viewModel.isBusy)
+                    const Center(
+                      child: CircularProgressIndicator.adaptive(
+                        backgroundColor: AppColors.primaryColor,
+                        strokeWidth: 10,
+                        valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                        // value: 1,
+                      ),
                     ),
-                  ),
                 ],
               ),
             ),

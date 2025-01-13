@@ -17,6 +17,15 @@ class SharedPreferencesService {
   Future<void> setUserId(int userId) async {
     await _prefs?.setInt('userId', userId);
   }
+  // Save an integer value (userId)
+  Future<void> setDarkTheme(bool isDark) async {
+    await _prefs?.setBool('isDark', isDark);
+  }
+
+  bool? getDarkTheme() {
+    return _prefs?.getBool('isDark');
+  }
+
 
   // Get an integer value (userId)
   int? getUserId() {

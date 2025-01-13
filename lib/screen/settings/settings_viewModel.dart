@@ -10,17 +10,40 @@ import 'package:my_notes/constants/routes.dart';
 import 'package:my_notes/databse_helper/data_base_helper.dart';
 import 'package:my_notes/service/locator.dart';
 import 'package:my_notes/service/shared_prefs_service.dart';
+import 'package:my_notes/service/theme_serivce.dart';
 import 'package:stacked/stacked.dart';
 
 class SettingsViewModel extends BaseViewModel {
-  bool _darkModeSwitchVal = false;
+  final ThemeService _themeService = ThemeService();
+  bool _isDarkTheme = false;
 
-  bool get darkModeSwitchVal => _darkModeSwitchVal;
+  bool get isDarkTheme => _isDarkTheme;
 
-  set darkModeSwitchVal(bool value) {
-    _darkModeSwitchVal = value;
-    notifyListeners();
+  SettingsViewModel() {
+    _loadTheme();
   }
+
+  // Load theme from SharedPreferences when the app starts
+  Future<void> _loadTheme() async {
+    _isDarkTheme = await _themeService.loadTheme();
+    notifyListeners(); // Notify UI of theme change
+  }
+
+  // Toggle theme and save to SharedPreferences
+  Future<void> toggleTheme(bool isDark) async {
+    _isDarkTheme = isDark;
+    notifyListeners(); // Notify UI immediately
+    await _themeService.saveTheme(isDark); // Persist the new theme
+  }
+
+  // bool _darkModeSwitchVal = false;
+  //
+  // bool get darkModeSwitchVal => _darkModeSwitchVal;
+  //
+  // set darkModeSwitchVal(bool value) {
+  //   _darkModeSwitchVal = value;
+  //   notifyListeners();
+  // }
 
   bool _bioMatricSwitchVal = true;
 
@@ -155,14 +178,28 @@ class SettingsViewModel extends BaseViewModel {
 
   setProfileImage() async {
     final Map<String, dynamic>? userProfile =
-    await dbHelper.getUserProfile((sharedPrefs.getUserId() ?? 0));
+        await dbHelper.getUserProfile((sharedPrefs.getUserId() ?? 0));
     if (userProfile == null) {
       throw Exception('User profile not found');
     }
 
-    if (userProfile['profile_image_path'] != null) {
-      profileImage = File(userProfile['profile_image_path']);
+    final profileImagePath = userProfile['profile_image_path'];
+    if (profileImagePath != null) {
+      final profileImageFile = File(profileImagePath);
+
+      if (await profileImageFile.exists()) {
+        _profileImage = profileImageFile;
+      } else {
+        log('Profile image file not found at $profileImagePath. Using default image.');
+        // Set a default image or leave _profileImage as null
+        _profileImage = null; // Or set it to a fallback asset
+      }
+    } else {
+      log('Profile image path is null');
+      // Set a default image or leave _profileImage as null
+      _profileImage = null; // Or set it to a fallback asset
     }
+    notifyListeners();
   }
 
   Future<void> updateUserProfileImage() async {
@@ -178,8 +215,6 @@ class SettingsViewModel extends BaseViewModel {
       if (userProfile == null) {
         throw Exception('User profile not found');
       }
-
-
 
       // Update user profile
       int? updatedId = await dbHelper.updateUser(
@@ -199,4 +234,10 @@ class SettingsViewModel extends BaseViewModel {
       log('Error updating user profile image: $e');
     }
   }
+
+// void toggleTheme(bool isDark) async {
+//   await sharedPrefs.setDarkTheme(isDark);
+//
+//   darkModeSwitchVal = isDark;
+// }
 }
