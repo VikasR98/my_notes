@@ -29,6 +29,8 @@ class _SettingsViewState extends State<SettingsView> {
         disposeViewModel: false,
         onViewModelReady: (viewModel) async {
           viewModel.setProfileImage();
+          viewModel.bioMetricSwitchVal =
+              viewModel.sharedPrefs.getIsPinEnabled() ?? false;
         },
         viewModelBuilder: () => SettingsViewModel(),
         builder: (context, viewModel, child) {
@@ -97,11 +99,24 @@ class _SettingsViewState extends State<SettingsView> {
                               ),
                             ),
                             SettingsRow(
+                              onTap: () {
+                                viewModel.goToSetupPinScreen(context);
+                              },
+                              label: setUpPinString,
+                              icon: const Icon(
+                                Icons.arrow_forward_ios_rounded,
+                                size: 30,
+                              ),
+                            ),
+                            SettingsRow(
                               label: bioMetricString,
                               icon: AppSwitchWidget(
-                                value: viewModel.bioMatricSwitchVal,
+                                value: viewModel.bioMetricSwitchVal,
                                 onChanged: (bool? val) {
-                                  viewModel.bioMatricSwitchVal = val ?? true;
+                                  viewModel.bioMetricSwitchVal = val ?? true;
+                                  if(val!=null) {
+                                    viewModel.sharedPrefs.setIsPinEnabled(val);
+                                  }
                                 },
                               ),
                             ),
@@ -121,17 +136,6 @@ class _SettingsViewState extends State<SettingsView> {
                               label: syncNowString,
                               icon: viewModel.getSyncWidget(),
                             ),
-                            SettingsRow(
-                              onTap: () {
-                                // viewModel.syncNow();
-                                Navigator.pushNamed(context, '/pinScreenRoute');
-                              },
-                              label: 'Pin Screen',
-                              icon: const Icon(
-                                Icons.arrow_forward_ios_rounded,
-                                size: 30,
-                              ),
-                            ),
                           ],
                         ),
                       ),
@@ -146,7 +150,7 @@ class _SettingsViewState extends State<SettingsView> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Container(
-                          color: Colors.amber,
+                          // color: Colors.amber,
                           child: Align(
                             alignment: Alignment.center,
                             child: GestureDetector(

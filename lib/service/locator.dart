@@ -7,6 +7,7 @@ Future<void> setupLocator() async {
   // Register SharedPreferencesService as a lazy singleton
 
   locator.registerLazySingleton(() => SharedPreferencesService());
+
   // Initialize SharedPreferencesService asynchronously
   final sharedPreferencesService = locator<SharedPreferencesService>();
   await sharedPreferencesService.init();

@@ -50,10 +50,9 @@ class _AddEntryViewState extends State<AddEntryView> {
             viewModel.lastEditTime =
                 formatDateTime(arguments.entry?.dateTime ?? '');
             viewModel.selectedValue = arguments.entry?.mood ?? 0;
-            print(viewModel.lastEditTime);
           } catch (e) {
             if (kDebugMode) {
-              print(e);
+              print('add_entry_view: $e');
             }
           }
         },

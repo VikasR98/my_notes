@@ -29,6 +29,7 @@ class _WelcomeScreenViewState extends State<WelcomeScreenView> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               const AppLogoAsset(),
+
               Expanded(
                 child: SizedBox(
                   // color: Colors.amber,

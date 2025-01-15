@@ -19,15 +19,19 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   void goToNextRoute() {
+    final sharedPrefs = locator<SharedPreferencesService>();
     Future.delayed(
       const Duration(seconds: 2),
       () {
-        if (locator<SharedPreferencesService>().getUserId() != null) {
-          Navigator.pushReplacementNamed(context, entryListRoute);
-
-        }else{
+        if (sharedPrefs.getUserId() != null) {
+          if (sharedPrefs.getIsPinEnabled() != null &&
+              sharedPrefs.getIsPinEnabled() == true) {
+            Navigator.pushReplacementNamed(context, appLockPinRoute);
+          } else {
+            Navigator.pushReplacementNamed(context, entryListRoute);
+          }
+        } else {
           Navigator.pushReplacementNamed(context, onboardingRoute);
-
         }
       },
     );

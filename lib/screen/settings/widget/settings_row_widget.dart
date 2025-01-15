@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:my_notes/constants/sizeExtentions.dart';
+
 class SettingsRow extends StatelessWidget {
   final String label;
   final Widget icon;
@@ -31,10 +32,12 @@ class SettingsRow extends StatelessWidget {
                 ),
               ),
             ),
-
             Expanded(
               flex: 1,
-              child: Align(child: icon, alignment: Alignment.centerRight,),
+              child: Align(
+                alignment: Alignment.centerRight,
+                child: icon,
+              ),
             )
           ],
         ),

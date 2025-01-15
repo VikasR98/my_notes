@@ -1,12 +1,4 @@
-/*
- '/': (context) => const SplashScreen(),
-        '/welcomeRoute': (context) => const WelcomeScreenView(),
-        '/signUpRoute': (context) => const SignUpView(),
-        '/signInRoute': (context) => const SignInView(),
-        '/notesListRoute': (context) => const NotesListView(),
-        '/settingsRoute': (context) => const SettingsView(),
-        '/pinScreenRoute': (_) => const PinScreenView(),
- */
+
 
 const String welcomeRoute = '/welcomeRoute';
 const String signUpRoute = '/signUpRoute';
@@ -17,4 +9,7 @@ const String pinScreenRoute = '/pinScreenRoute';
 const String addEntryRoute = '/addEntryRoute';
 const String viewEntryRoute = '/viewEntryRoute';
 const String onboardingRoute = '/onboardingRoute';
+const String confirmPinRoute = '/confirmPinRoute';
+const String pinCreateSuccessRoute = '/pinCreateSuccessRoute';
+const String appLockPinRoute = '/appLockPinRoute';
 

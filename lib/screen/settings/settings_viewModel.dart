@@ -45,12 +45,12 @@ class SettingsViewModel extends BaseViewModel {
   //   notifyListeners();
   // }
 
-  bool _bioMatricSwitchVal = true;
+  bool _bioMetricSwitchVal = false;
 
-  bool get bioMatricSwitchVal => _bioMatricSwitchVal;
+  bool get bioMetricSwitchVal => _bioMetricSwitchVal;
 
-  set bioMatricSwitchVal(bool value) {
-    _bioMatricSwitchVal = value;
+  set bioMetricSwitchVal(bool value) {
+    _bioMetricSwitchVal = value;
     notifyListeners();
   }
 
@@ -235,9 +235,7 @@ class SettingsViewModel extends BaseViewModel {
     }
   }
 
-// void toggleTheme(bool isDark) async {
-//   await sharedPrefs.setDarkTheme(isDark);
-//
-//   darkModeSwitchVal = isDark;
-// }
+  goToSetupPinScreen(context) {
+    Navigator.pushNamed(context, pinScreenRoute);
+  }
 }

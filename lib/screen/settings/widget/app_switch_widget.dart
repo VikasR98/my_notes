@@ -26,22 +26,22 @@ class AppSwitchWidget extends StatelessWidget {
 
   getThumbColor(final theme) {
     if (theme == Brightness.light) {
-      return MaterialStateProperty.all(
+      return WidgetStateProperty.all(
         AppColors.appWhite,
       );
     }
-    return MaterialStateProperty.all(
+    return WidgetStateProperty.all(
       AppColors.darkModeBgColor,
     );
   }
 
   getTrackOutLineColor() {
     if (value == false) {
-      return MaterialStateProperty.all(
+      return WidgetStateProperty.all(
         AppColors.inactiveSwitchTrackColor,
       );
     }
-    return MaterialStateProperty.all(
+    return WidgetStateProperty.all(
       AppColors.primaryColor,
     );
   }

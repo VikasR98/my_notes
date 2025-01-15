@@ -50,8 +50,6 @@ class UserRegisteredSuccessView extends StatelessWidget {
             ),
             verticalSpace(10),
 
-            // Expanded(child: Container()),
-            // Spacer(),
             AppButton(
               onTap: () {
                 Navigator.pushReplacementNamed(context, '/signInRoute');
@@ -64,3 +62,5 @@ class UserRegisteredSuccessView extends StatelessWidget {
     );
   }
 }
+
+

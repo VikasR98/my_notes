@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:my_notes/constants/colors.dart';
@@ -5,25 +7,39 @@ import 'package:my_notes/constants/dimes.dart';
 import 'package:my_notes/constants/sizeExtentions.dart';
 import 'package:my_notes/constants/strings.dart';
 import 'package:my_notes/constants/utils.dart';
-import 'package:my_notes/screen/pin_screen/pin_screen_viewmodel.dart';
-import 'package:my_notes/screen/pin_screen/widget/pin_textfield_row.dart';
+import 'package:my_notes/screen/confirm_pin/confirm_pin_viewmodel.dart';
+import 'package:my_notes/screen/create_pin/widget/pin_textfield_row.dart';
 import 'package:my_notes/widgets/app_textformfield_new.dart';
 import 'package:my_notes/widgets/default_appbar_leading.dart';
 import 'package:my_notes/widgets/default_appbar_title.dart';
 import 'package:stacked/stacked.dart';
 
-class PinScreenView extends StatefulWidget {
-  const PinScreenView({super.key});
+class ConfirmPinView extends StatefulWidget {
+  const ConfirmPinView({
+    super.key,
+  });
 
   @override
-  State<PinScreenView> createState() => _PinScreenViewState();
+  State<ConfirmPinView> createState() => _ConfirmPinViewState();
 }
 
-class _PinScreenViewState extends State<PinScreenView> {
+class _ConfirmPinViewState extends State<ConfirmPinView> {
   @override
   Widget build(BuildContext context) {
     return ViewModelBuilder.reactive(
-        viewModelBuilder: () => PinScreenViewModel(),
+        onViewModelReady: (viewModel) {
+          try {
+            final args = ModalRoute.of(context)?.settings.arguments
+                as ConfirmPinViewArgs;
+            log(args.pin);
+            viewModel.pinValueOne = args.pin;
+          } catch (e) {
+            if (kDebugMode) {
+              print('confirm_pin_view - $e');
+            }
+          }
+        },
+        viewModelBuilder: () => ConfirmPinViewModel(),
         builder: (context, viewModel, child) {
           return Scaffold(
               appBar: AppBar(
@@ -34,19 +50,52 @@ class _PinScreenViewState extends State<PinScreenView> {
                 child: Column(
                   // mainAxisSize: MainAxisSize.max,
                   children: [
-                    verticalSpace(80),
+                    verticalSpace(40),
                     Text(
-                      'Create a new PIN',
+                      reEntryPinTitle,
+                      textAlign: TextAlign.center,
                       style: context.displaySmall
                           ?.copyWith(fontWeight: FontWeight.bold),
                     ),
                     Text(
-                      'Please enter your passcode',
+                      reEnterPinSubtitle,
                       style: context.bodyMedium?.copyWith(),
                     ),
                     verticalSpace(20),
-                    PinTextFieldsRow(viewModel: viewModel,),
-                    verticalSpace(100),
+                    PinTextFieldsRow(
+                      showPin: viewModel.showPin,
+                      isFirstFilled: viewModel.firstFilled,
+                      firstValue: viewModel.firstChar ?? '',
+                      isSecondFilled: viewModel.secondFilled,
+                      secondValue: viewModel.secondChar ?? '',
+                      isThirdFilled: viewModel.thirdFilled,
+                      thirdValue: viewModel.thirdChar ?? '',
+                      isFourthFilled: viewModel.fourthFilled,
+                      fourthValue: viewModel.fourthChar ?? '',
+                    ),
+                    verticalSpace(10),
+                    if (viewModel.isWrongPin == true) ...[
+                      Text(
+                        'Pin does not match',
+                        style: context.labelSmall?.copyWith(
+                          color: AppColors.primaryColor,
+                        ),
+                      )
+                    ],
+                    verticalSpace(20),
+                    GestureDetector(
+                      onTap: () {
+                        viewModel.showPin = !viewModel.showPin;
+                      },
+                      child: Icon(
+                        Icons.remove_red_eye,
+                        size: 30,
+                        color: viewModel.showPin
+                            ? AppColors.primaryColor
+                            : Colors.grey,
+                      ),
+                    ),
+                    verticalSpace(40),
                     Flexible(
                       child: GridView(
                         physics: const NeverScrollableScrollPhysics(),
@@ -64,60 +113,69 @@ class _PinScreenViewState extends State<PinScreenView> {
                           PinInputNumberWidget(
                             label: '1',
                             onTap: () {
-                              viewModel.enterValue(value: '1');
+                              viewModel.enterValue(
+                                  value: '1', context: context);
                             },
                           ),
                           PinInputNumberWidget(
                             label: '2',
                             onTap: () {
-                              viewModel.enterValue(value: '2');
+                              viewModel.enterValue(
+                                  value: '2', context: context);
                             },
                           ),
                           PinInputNumberWidget(
                             label: '3',
                             onTap: () {
-                              viewModel.enterValue(value: '3');
+                              viewModel.enterValue(
+                                  value: '3', context: context);
                             },
                           ),
                           PinInputNumberWidget(
                             label: '4',
                             onTap: () {
-                              viewModel.enterValue(value: '4');
+                              viewModel.enterValue(
+                                  value: '4', context: context);
                             },
                           ),
                           PinInputNumberWidget(
                             label: '5',
                             onTap: () {
-                              viewModel.enterValue(value: '5');
+                              viewModel.enterValue(
+                                  value: '5', context: context);
                             },
                           ),
                           PinInputNumberWidget(
                             label: '6',
                             onTap: () {
-                              viewModel.enterValue(value: '6');
+                              viewModel.enterValue(
+                                  value: '6', context: context);
                             },
                           ),
                           PinInputNumberWidget(
                             label: '7',
                             onTap: () {
-                              viewModel.enterValue(value: '7');
+                              viewModel.enterValue(
+                                  value: '7', context: context);
                             },
                           ),
                           PinInputNumberWidget(
                             label: '8',
                             onTap: () {
-                              viewModel.enterValue(value: '8');
+                              viewModel.enterValue(
+                                  value: '8', context: context);
                             },
                           ),
                           PinInputNumberWidget(
                             label: '9',
                             onTap: () {
-                              viewModel.enterValue(value: '9');
+                              viewModel.enterValue(
+                                  value: '9', context: context);
                             },
                           ),
                           PinInputNumberWidget(
                             onTap: () {
-                              viewModel.showPin();
+                              viewModel.showEnteredPin();
                             },
                             icon: const Icon(
                               Icons.fingerprint,
@@ -127,7 +185,8 @@ class _PinScreenViewState extends State<PinScreenView> {
                           PinInputNumberWidget(
                             label: '0',
                             onTap: () {
-                              viewModel.enterValue(value: '0');
+                              viewModel.enterValue(
+                                  value: '0', context: context);
                             },
                           ),
                           PinInputNumberWidget(
@@ -164,23 +223,29 @@ class PinInputNumberWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      // color: Colors.amber,
-      child: GestureDetector(
-        onTap: onTap,
+    return InkWell(
+      onTap: onTap,
+      child: Container(
+        margin: const EdgeInsets.all(1),
+        height: 40,
+        width: 40,
+        // color: Colors.red,
         child: icon ??
             Center(
-              child: GestureDetector(
-                onTap: onTap,
-                child: Text(
-                  label ?? '',
-                  style: context.displayMedium?.copyWith(
-                    fontWeight: FontWeight.w900,
-                  ),
+              child: Text(
+                label ?? '',
+                style: context.displayMedium?.copyWith(
+                  fontWeight: FontWeight.w900,
                 ),
               ),
             ),
       ),
     );
   }
+}
+
+class ConfirmPinViewArgs {
+  final String pin;
+
+  ConfirmPinViewArgs({required this.pin});
 }

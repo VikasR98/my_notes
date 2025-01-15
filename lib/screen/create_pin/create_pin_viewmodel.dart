@@ -1,6 +1,12 @@
+import 'dart:developer';
+
+import 'package:flutter/material.dart';
+import 'package:my_notes/constants/routes.dart';
+import 'package:my_notes/screen/confirm_pin/confirm_pin_view.dart';
+import 'package:my_notes/service/locator.dart';
 import 'package:stacked/stacked.dart';
 
-class PinScreenViewModel extends BaseViewModel {
+class CreatePinViewModel extends BaseViewModel {
   String? firstChar;
   String? secondChar;
   String? thirdChar;
@@ -19,7 +25,16 @@ class PinScreenViewModel extends BaseViewModel {
   bool _thirdFilled = false;
   bool _fourthFilled = false;
 
-  enterValue({required String value}) {
+  bool _showPin = false;
+
+  bool get showPin => _showPin;
+
+  set showPin(bool value) {
+    _showPin = value;
+    notifyListeners();
+  }
+
+  enterValue({required String value, required BuildContext context}) {
     if (firstFilled == false) {
       firstFilled = true;
       firstChar = value;
@@ -32,6 +47,12 @@ class PinScreenViewModel extends BaseViewModel {
     } else if (fourthFilled == false) {
       fourthFilled = true;
       fourthChar = value;
+      Navigator.pushNamed(
+        context,
+        confirmPinRoute,
+        arguments: ConfirmPinViewArgs(
+            pin: '$firstChar$secondChar$thirdChar$fourthChar'),
+      );
     }
   }
 
@@ -69,10 +90,11 @@ class PinScreenViewModel extends BaseViewModel {
 
   set fourthFilled(bool value) {
     _fourthFilled = value;
+    log('fourth filled');
     notifyListeners();
   }
 
-  void showPin() {
+  void showEnteredPin() {
     print(firstChar);
     print(secondChar);
     print(thirdChar);

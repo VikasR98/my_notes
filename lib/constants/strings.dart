@@ -15,14 +15,18 @@ const String viewEntryString = 'View Entry';
 const String addEntryString = 'Add Entry';
 const String changeProfileImageString = 'Change Profile Image';
 const String darkModeString = 'Dark Mode';
-const String bioMetricString = 'Biometric/PIN Lock';
+const String bioMetricString = 'Enable PIN Lock';
 const String syncAutoString = 'Sync Automatically';
 const String syncNowString = 'Sync Now';
 const String skipString = 'Skip';
 const String nextString = 'Next';
+const String setUpPinString  = 'Set Up PIN';
 
 const String logoutString = 'Logout';
 const String createPinString = 'Create PIN';
+const String reEntryPinTitle = 'Re-enter your\nnew PIN';
+const String reEnterPinSubtitle = 'Please enter your passcode again';
+
 // const String viewEntry = 'View Entry';
 const String onboardingOneText = 'Record your memories';
 const String onboardingTwoText = 'Never loose your entries';
@@ -33,3 +37,8 @@ const String onboardingTwoSubtext =
     'Back up and sync your diary entries across all your devices';
 const String onboardingThreeSubtext =
     'Set a PIN on your diary to keep your entries out of prying eyes';
+const String pinEnableString = "PIN Lock is enabled. You can change from Settings";
+const String setPinSuccessOne = "You've successfully";
+const String setPinSuccessTwo = "set a new PIN!";
+const String lockUiFirstMsg = "Please enter your passcode";
+const String incorrectPinMsg = "You've entered an incorrect PIN. Try again.";
