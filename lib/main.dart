@@ -1,3 +1,4 @@
+import 'package:device_preview/device_preview.dart';
 import 'package:flutter/material.dart';
 
 import 'package:my_notes/app/app_theme.dart';
@@ -11,7 +12,6 @@ import 'package:my_notes/screen/confirm_pin/widgets/pin_create_success_view.dart
 import 'package:my_notes/screen/create_pin/create_pin_view.dart';
 import 'package:my_notes/screen/entryList/entry_list_view.dart';
 import 'package:my_notes/screen/settings/settings_view.dart';
-import 'package:my_notes/screen/settings/settings_viewModel.dart';
 import 'package:my_notes/screen/signIn/sign_in_view.dart';
 import 'package:my_notes/screen/signUp/sign_up_view.dart';
 import 'package:my_notes/screen/splash_screen.dart';
@@ -20,16 +20,19 @@ import 'package:my_notes/screen/welcomeScreen/welcome_screen_view.dart';
 import 'package:my_notes/service/locator.dart';
 import 'package:my_notes/service/shared_prefs_service.dart';
 import 'package:my_notes/theme_demo/theme_provider.dart';
-import 'package:stacked/stacked.dart';
 import 'package:provider/provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  // Add a new entry
   // Initialize and register services
   await setupLocator();
-  runApp(const MyApp());
+  runApp(
+      // DevicePreview(
+      //   enabled: kDebugMode,
+      //   builder: (context) => const MyApp(),
+      // ),
+      const MyApp());
 }
 
 class MyApp extends StatefulWidget {
@@ -55,6 +58,8 @@ class _MyAppState extends State<MyApp> {
       child: Builder(builder: (context) {
         final themeProvider = Provider.of<ThemeProvider>(context);
         return MaterialApp(
+          locale: DevicePreview.locale(context),
+          builder: DevicePreview.appBuilder,
           title: 'Flutter Demo',
           debugShowCheckedModeBanner: false,
           theme: lightTheme,
@@ -77,7 +82,6 @@ class _MyAppState extends State<MyApp> {
             confirmPinRoute: (_) => const ConfirmPinView(),
             pinCreateSuccessRoute: (_) => const PinCreateSuccessView(),
             appLockPinRoute: (_) => const AppLockPinView(),
-
           },
           // home: const FigmaToLottie(),
         );

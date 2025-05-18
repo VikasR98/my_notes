@@ -1,8 +1,6 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
 
-class AppColors{
+class AppColors {
   static const Color primaryColor = Color(0xFFEE3A46);
   static const Color appWhite = Color(0xFFFFFFFF);
   // static const Color appWhite = Color(0xFFDDDBDC);
@@ -18,5 +16,4 @@ class AppColors{
   static const Color hintTextColor = Colors.black45;
   static const Color iconBgColor = Color(0xffffd9a3);
   static const Color inactiveSwitchTrackColor = Color(0xffc9c9dc);
-
 }

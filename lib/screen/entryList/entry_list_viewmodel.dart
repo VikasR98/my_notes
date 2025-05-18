@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:my_notes/constants/routes.dart';
@@ -82,9 +83,21 @@ class EntryListViewModel extends BaseViewModel {
   }
 
   getAllEntries() async {
+    setBusy(true);
     entries = await dbHelper.getDiaryEntries(sharedPrefs.getUserId() ?? 0);
     entries = entries?.reversed.cast<DiaryEntry>().toList();
+    log(entries!.length.toString());
     notifyListeners();
+    setBusy(false);
+  }
+
+  Future<void> searchDiaryEntries({required String query}) async {
+    // final query = _searchController.text;
+
+    if (query.isNotEmpty) {
+      entries = await DatabaseHelper().searchDiaryEntriesByTitle(query);
+      log(entries.toString());
+    }
   }
 
   goToEditEntry({
@@ -105,6 +118,11 @@ class EntryListViewModel extends BaseViewModel {
   }
 
   deleteDiaryEntry({required int id}) async {
-    getAllEntries();
+    dbHelper.deleteDiaryEntry(id, sharedPrefs.getUserId() ?? 0).then((value) {
+      getAllEntries();
+      if (kDebugMode) {
+        print(value.toString());
+      }
+    });
   }
 }

@@ -20,29 +20,29 @@ class UserRegisteredSuccessView extends StatelessWidget {
           children: [
             verticalSpace(30),
             Image.asset(
-              successImg,
-              color: AppColors.primaryColor,
+              checked,
+              // color: AppColors.primaryColor,
 
-              height: 250,
+              height: 150,
               // fit: BoxFit.contain,
             ),
             Column(
               children: [
                 Text(
                   successMessageOne,
-                  style: Theme.of(context).textTheme.displaySmall?.copyWith(
+                  style: Theme.of(context).textTheme.headlineLarge?.copyWith(
                         fontWeight: FontWeight.bold,
                       ),
                 ),
                 Text(
                   successMessageTwo,
-                  style: Theme.of(context).textTheme.displaySmall?.copyWith(
+                  style: Theme.of(context).textTheme.headlineLarge?.copyWith(
                         fontWeight: FontWeight.bold,
                       ),
                 ),
                 Text(
                   successMessageThree,
-                  style: Theme.of(context).textTheme.displaySmall?.copyWith(
+                  style: Theme.of(context).textTheme.headlineLarge?.copyWith(
                         fontWeight: FontWeight.bold,
                       ),
                 ),

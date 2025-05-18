@@ -29,7 +29,6 @@ class _WelcomeScreenViewState extends State<WelcomeScreenView> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               const AppLogoAsset(),
-
               Expanded(
                 child: SizedBox(
                   // color: Colors.amber,
@@ -80,13 +79,6 @@ class _WelcomeScreenViewState extends State<WelcomeScreenView> {
                               Navigator.pushNamed(context, signInRoute);
                               // Navigator.push
                             },
-                          ),
-                          const SizedBox(
-                            height: 20,
-                          ),
-                          Text(
-                            welcomeBottomText,
-                            style: Theme.of(context).textTheme.labelMedium,
                           ),
                         ],
                       )

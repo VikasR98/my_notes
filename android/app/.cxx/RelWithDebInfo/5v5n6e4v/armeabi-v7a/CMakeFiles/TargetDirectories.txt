@@ -1,0 +1,2 @@
+/Users/futureai/StudioProjects/my_notes/android/app/.cxx/RelWithDebInfo/5v5n6e4v/armeabi-v7a/CMakeFiles/edit_cache.dir
+/Users/futureai/StudioProjects/my_notes/android/app/.cxx/RelWithDebInfo/5v5n6e4v/armeabi-v7a/CMakeFiles/rebuild_cache.dir

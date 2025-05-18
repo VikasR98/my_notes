@@ -8,6 +8,7 @@ import 'package:my_notes/screen/entryList/entry_list_viewmodel.dart';
 
 class AddEntryBtn extends StatelessWidget {
   final EntryListViewModel viewModel;
+
   const AddEntryBtn({
     super.key,
     required this.viewModel,
@@ -20,7 +21,7 @@ class AddEntryBtn extends StatelessWidget {
         Navigator.pushNamed(
           context,
           addEntryRoute,
-        ).then((value){
+        ).then((value) {
           viewModel.getAllEntries();
         });
       },
@@ -28,7 +29,7 @@ class AddEntryBtn extends StatelessWidget {
         radius: 30,
         backgroundColor: AppColors.primaryColor,
         child: Icon(
-          Icons.book,
+          Icons.edit_note_rounded,
           size: 35,
           color: AppColors.appWhite,
         ),

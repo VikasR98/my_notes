@@ -119,11 +119,21 @@ class ConfirmPinViewModel extends BaseViewModel {
       Navigator.pushNamed(context, pinCreateSuccessRoute);
     } else {
       isWrongPin = true;
+      clearValues();
       notifyListeners();
       log('pin not matched');
     }
   }
-
+clearValues(){
+  firstFilled = false;
+  secondFilled = false;
+  thirdFilled = false;
+  fourthFilled = false;
+  firstChar = '';
+  secondChar = '';
+  thirdChar = '';
+  fourthChar = '';
+}
   void showEnteredPin() {
     if (kDebugMode) {
       log(firstChar!);

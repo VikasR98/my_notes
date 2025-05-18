@@ -2,7 +2,6 @@ import 'dart:developer';
 
 import 'package:flutter/cupertino.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:my_notes/databse_helper/data_base_helper.dart';
 import 'package:stacked/stacked.dart';
 
@@ -73,9 +72,6 @@ class SignUpViewModel extends BaseViewModel {
     return;
   }
 
-  // import 'dart:io';
-  // import 'package:image_picker/image_picker.dart';
-
   Future<bool> isUser() async {
     return await DatabaseHelper().checkUserExistence(
       email: emailController.text.trim(),
@@ -94,8 +90,6 @@ class SignUpViewModel extends BaseViewModel {
       userRegistered = true;
       notifyListeners();
       log("User profile saved successfully without image.");
-
     }
-
   }
 }

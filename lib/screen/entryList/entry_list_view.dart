@@ -1,6 +1,8 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:my_notes/app/image_config.dart';
 import 'package:my_notes/constants/colors.dart';
 import 'package:my_notes/constants/dimes.dart';
 import 'package:my_notes/main.dart';
@@ -17,7 +19,6 @@ class EntryListView extends StatefulWidget {
 }
 
 class _EntryListViewState extends State<EntryListView> with RouteAware {
-
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
@@ -32,52 +33,100 @@ class _EntryListViewState extends State<EntryListView> with RouteAware {
     log("didPopNext called");
   }
 
+  FocusNode searchFocusNode = FocusNode();
+
   @override
   Widget build(BuildContext context) {
     Brightness theme = Theme.of(context).brightness;
     return ViewModelBuilder.reactive(
-      onViewModelReady: (viewModel){
-        // Store the ViewModel in a local variable
-        // _viewModel = viewModel;
-        log('entry viewmodel');
-        // viewModel.deleteDiaryEntry(id:11);
+      onViewModelReady: (viewModel) {
         viewModel.getAllEntries();
       },
       viewModelBuilder: () => EntryListViewModel(),
       builder: (context, viewModel, child) {
-        return Scaffold(
-          appBar: AppBar(
-            // leading: const Padding(
-            //   padding: EdgeInsets.only(left: Dimens.padding20),
-            //   child: Icon(
-            //     Icons.book,
-            //     size: Dimens.iconSize50,
-            //   ),
-            // ),
-            // title: const Text('Logo'),
-            actions: [
-              Padding(
-                padding:const EdgeInsets.only(right: Dimens.padding20),
-                child: GestureDetector(
-                  onTap: () {
-                    viewModel.goToSettings(context);
-                  },
-                  child: const Icon(
-                    Icons.settings,
-                    size: Dimens.iconSize50,
+        return GestureDetector(
+          onTap: () {
+            searchFocusNode.unfocus();
+          },
+          child: Scaffold(
+            appBar: AppBar(
+              leading: Padding(
+                padding: const EdgeInsets.only(left: Dimens.padding20),
+                child: Image.asset(
+                  diaryThree,
+                  height: Dimens.iconSize50,
+                  color: theme == Brightness.light
+                      ? Colors.black
+                      : AppColors.appWhite,
+                ),
+              ),
+              title: Center(
+                child: Text(
+                  'Diary',
+                  style: GoogleFonts.rowdies(
+                    fontSize: 30,
+                    fontWeight: FontWeight.bold,
+                    color: theme == Brightness.light
+                        ? Colors.black
+                        : AppColors.appWhite,
                   ),
                 ),
-              )
-            ],
-          ),
-          floatingActionButton:  AddEntryBtn(viewModel: viewModel,),
-          body: NotesListBody(
-            viewModel: viewModel,
-            theme: theme,
-
+              ),
+              actions: [
+                Padding(
+                  padding: const EdgeInsets.only(right: Dimens.padding20),
+                  child: GestureDetector(
+                    onTap: () {
+                      searchFocusNode.unfocus();
+                      viewModel.goToSettings(context);
+                    },
+                    child: const Icon(
+                      Icons.settings,
+                      size: Dimens.iconSize50,
+                    ),
+                  ),
+                )
+              ],
+            ),
+            floatingActionButton: AddEntryBtn(
+              viewModel: viewModel,
+            ),
+            body: viewModel.isBusy
+                ? const Center(
+                    child: CircularProgressIndicator(),
+                  )
+                : viewModel.entries!.isEmpty
+                    ? const NoEntryWidget()
+                    : NotesListBody(
+                        viewModel: viewModel,
+                        theme: theme,
+                        focusNode: searchFocusNode,
+                      ),
           ),
         );
       },
     );
+  }
+}
+
+class NoEntryWidget extends StatelessWidget {
+  const NoEntryWidget({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Image.asset(
+              nicePen,
+              height: 100,
+            ),
+            Text('Everyday is day one')
+          ],
+        ),
+      );
   }
 }

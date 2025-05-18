@@ -1,4 +1,3 @@
-import 'dart:developer';
 import 'dart:io';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
@@ -89,6 +88,22 @@ class DatabaseHelper {
     });
   }
 
+  // New method to search diary entries by title
+  Future<List<DiaryEntry>> searchDiaryEntriesByTitle(String title) async {
+    final db = await database;
+
+    // Use SQL `LIKE` to search for titles matching the provided text
+    final List<Map<String, dynamic>> results = await db.query(
+      'diary_entries',
+      where: 'title LIKE ?',
+      whereArgs: ['%$title%'], // % is used for partial matching
+    );
+
+    return List.generate(results.length, (i) {
+      return DiaryEntry.fromMap(results[i]);
+    });
+  }
+
   // Update a diary entry
   Future<int> updateDiaryEntry(DiaryEntry entry, int userId) async {
     final db = await database;
@@ -172,7 +187,8 @@ class DatabaseHelper {
           whereArgs: [email],
         );
 
-        if (oldProfile.isNotEmpty && oldProfile.first['profile_image_path'] != null) {
+        if (oldProfile.isNotEmpty &&
+            oldProfile.first['profile_image_path'] != null) {
           final oldImagePath = oldProfile.first['profile_image_path'] as String;
           final oldFile = File(oldImagePath);
           if (await oldFile.exists()) {
@@ -205,7 +221,6 @@ class DatabaseHelper {
 
     return rowsAffected;
   }
-
 
   // login  user by email and password
   Future<int?> login({required String email, required String password}) async {

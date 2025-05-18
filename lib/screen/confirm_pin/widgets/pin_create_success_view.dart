@@ -27,23 +27,23 @@ class _PinCreateSuccessViewState extends State<PinCreateSuccessView> {
             children: [
               verticalSpace(30),
               Image.asset(
-                successImg,
-                color: AppColors.primaryColor,
+                checked,
+                // color: AppColors.primaryColor,
 
-                height: 250,
+                height: 150,
                 // fit: BoxFit.contain,
               ),
               Column(
                 children: [
                   Text(
                     setPinSuccessOne,
-                    style: Theme.of(context).textTheme.displaySmall?.copyWith(
+                    style: Theme.of(context).textTheme.headlineLarge?.copyWith(
                       fontWeight: FontWeight.bold,
                     ),
                   ),
                   Text(
                     setPinSuccessTwo,
-                    style: Theme.of(context).textTheme.displaySmall?.copyWith(
+                    style: Theme.of(context).textTheme.headlineLarge?.copyWith(
                       fontWeight: FontWeight.bold,
                     ),
                   ),

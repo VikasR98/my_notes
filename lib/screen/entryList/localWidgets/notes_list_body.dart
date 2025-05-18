@@ -9,48 +9,60 @@ class NotesListBody extends StatelessWidget {
     super.key,
     required this.theme,
     required this.viewModel,
+    required this.focusNode,
   });
 
   final Brightness theme;
   final EntryListViewModel viewModel;
+  final FocusNode focusNode;
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Padding(
-          padding: Dimens.appScreenPadding(),
-          child: Search(theme: theme),
-        ),
-        Expanded(
-          child: RefreshIndicator.adaptive(
-            color: Colors.red,
-            strokeWidth: 2,
-            onRefresh: () async {
-              viewModel.getAllEntries();
-            },
-            child: ListView.builder(
-              // reverse: true,
-              padding: Dimens.appScreenPaddingHorizontal(),
-              physics: const BouncingScrollPhysics(),
-              itemCount: viewModel.entries?.length ?? 0,
-              itemBuilder: (context, index) {
-                final data = viewModel.entries?[index];
-                return NotesListItem(
-                  onTap: () {
-                    viewModel.onItemTap(context: context, entry: data);
-                  },
-                  title: data?.title ?? '',
-                  subtitle: data?.description ?? '',
-                  date: data?.dateTime ?? '',
-                  mood: data?.mood ?? 0,
-                );
-              },
+    return GestureDetector(
+      onTap: () {
+        focusNode.unfocus();
+      },
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Padding(
+            padding: Dimens.appScreenPadding(),
+            child: Search(
+              theme: theme,
+              viewModel: viewModel,
+              focusNode: focusNode,
             ),
           ),
-        )
-      ],
+          Expanded(
+            child: RefreshIndicator.adaptive(
+              color: Colors.red,
+              strokeWidth: 2,
+              onRefresh: () async {
+                viewModel.getAllEntries();
+              },
+              child: ListView.builder(
+                // reverse: true,
+                padding: Dimens.appScreenPaddingHorizontal(),
+                physics: const BouncingScrollPhysics(),
+                itemCount: viewModel.entries?.length ?? 0,
+                itemBuilder: (context, index) {
+                  final data = viewModel.entries?[index];
+                  return NotesListItem(
+                    onTap: () {
+                      focusNode.unfocus();
+                      viewModel.onItemTap(context: context, entry: data);
+                    },
+                    title: data?.title ?? '',
+                    subtitle: data?.description ?? '',
+                    date: data?.dateTime ?? '',
+                    mood: data?.mood ?? 0,
+                  );
+                },
+              ),
+            ),
+          )
+        ],
+      ),
     );
   }
 }

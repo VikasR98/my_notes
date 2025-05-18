@@ -152,6 +152,13 @@ class SettingsViewModel extends BaseViewModel {
     }
   }
 
+  bool isShowEnablePinSwitch() {
+    if (sharedPrefs.getSavedPin() != null) {
+      return true;
+    }
+    return false;
+  }
+
   final sharedPrefs = locator<SharedPreferencesService>();
 
   void logout(BuildContext context) async {
