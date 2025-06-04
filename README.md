@@ -1,1 +1,5 @@
-![alt text](Screenshot_1747559430.png)
+<p float="left">
+  <img src="screenshots/welcome.png" width="200" />
+  <img src="screenshots/welcome.png" width="200" />
+  <img src="screenshots/welcome.png" width="200" />
+</p>
