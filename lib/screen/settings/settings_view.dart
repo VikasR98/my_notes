@@ -123,22 +123,22 @@ class _SettingsViewState extends State<SettingsView> {
                                   ),
                                 )
                               ],
-                              // SettingsRow(
-                              //   label: syncAutoString,
-                              //   icon: AppSwitchWidget(
-                              //     value: viewModel.syncAutoSwitchVal,
-                              //     onChanged: (bool? val) {
-                              //       viewModel.syncAutoSwitchVal = val ?? true;
-                              //     },
-                              //   ),
-                              // ),
-                              // SettingsRow(
-                              //   onTap: () {
-                              //     viewModel.syncNow();
-                              //   },
-                              //   label: syncNowString,
-                              //   icon: viewModel.getSyncWidget(),
-                              // ),
+                              SettingsRow(
+                                label: syncAutoString,
+                                icon: AppSwitchWidget(
+                                  value: viewModel.syncAutoSwitchVal,
+                                  onChanged: (bool? val) {
+                                    viewModel.syncAutoSwitchVal = val ?? true;
+                                  },
+                                ),
+                              ),
+                              SettingsRow(
+                                onTap: () {
+                                  viewModel.syncNow();
+                                },
+                                label: syncNowString,
+                                icon: viewModel.getSyncWidget(),
+                              ),
                             ],
                           ),
                         ),

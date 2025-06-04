@@ -60,7 +60,7 @@ class _MyAppState extends State<MyApp> {
         return MaterialApp(
           locale: DevicePreview.locale(context),
           builder: DevicePreview.appBuilder,
-          title: 'Flutter Demo',
+          title: 'My Notes',
           debugShowCheckedModeBanner: false,
           theme: lightTheme,
           darkTheme: darkTheme,
