@@ -53,3 +53,5 @@ The app is live on the Google Play Store!
 This project is licensed under the MIT License.
 
 Made with ❤️ in Flutter
+
+UI Inspiration - https://www.behance.net/gallery/144776573/Diaree-UI-Design-Presentation
