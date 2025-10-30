@@ -10,31 +10,17 @@ import 'package:my_notes/constants/routes.dart';
 import 'package:my_notes/databse_helper/data_base_helper.dart';
 import 'package:my_notes/service/locator.dart';
 import 'package:my_notes/service/shared_prefs_service.dart';
-import 'package:my_notes/service/theme_serivce.dart';
 import 'package:stacked/stacked.dart';
 
 class SettingsViewModel extends BaseViewModel {
-  final ThemeService _themeService = ThemeService();
-  bool _isDarkTheme = false;
-
-  bool get isDarkTheme => _isDarkTheme;
-
-  SettingsViewModel() {
-    _loadTheme();
-  }
-
   // Load theme from SharedPreferences when the app starts
-  Future<void> _loadTheme() async {
-    _isDarkTheme = await _themeService.loadTheme();
-    notifyListeners(); // Notify UI of theme change
-  }
 
   // Toggle theme and save to SharedPreferences
-  Future<void> toggleTheme(bool isDark) async {
-    _isDarkTheme = isDark;
-    notifyListeners(); // Notify UI immediately
-    await _themeService.saveTheme(isDark); // Persist the new theme
-  }
+  // Future<void> toggleTheme(bool isDark) async {
+  //   _isDarkTheme = isDark;
+  //   notifyListeners(); // Notify UI immediately
+  //   await _themeService.saveTheme(isDark); // Persist the new theme
+  // }
 
   // bool _darkModeSwitchVal = false;
   //

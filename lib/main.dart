@@ -1,10 +1,12 @@
 import 'package:device_preview/device_preview.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
 import 'package:my_notes/app/app_theme.dart';
 import 'package:my_notes/app/dark_theme.dart';
 import 'package:my_notes/app_lock_pin/app_lock_pin_view.dart';
 import 'package:my_notes/constants/routes.dart';
+import 'package:my_notes/firebase_options.dart';
 import 'package:my_notes/onboarding/onboarding_view.dart';
 import 'package:my_notes/screen/addEntry/add_entry_view.dart';
 import 'package:my_notes/screen/confirm_pin/confirm_pin_view.dart';
@@ -18,12 +20,13 @@ import 'package:my_notes/screen/splash_screen.dart';
 import 'package:my_notes/screen/viewEntry/view_entry_view.dart';
 import 'package:my_notes/screen/welcomeScreen/welcome_screen_view.dart';
 import 'package:my_notes/service/locator.dart';
-import 'package:my_notes/service/shared_prefs_service.dart';
 import 'package:my_notes/theme_demo/theme_provider.dart';
 import 'package:provider/provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 
   // Initialize and register services
   await setupLocator();
@@ -43,12 +46,9 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  late bool _isDarkTheme;
-
   @override
   void initState() {
     super.initState();
-    _isDarkTheme = locator<SharedPreferencesService>().getDarkTheme() ?? false;
   }
 
   @override

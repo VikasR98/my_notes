@@ -11,7 +11,7 @@ ThemeData darkTheme = ThemeData(
     scaffoldBackgroundColor: AppColors.darkModeBgColor,
     appBarTheme: getAppBarDarkTheme(),
     colorScheme: const ColorScheme.dark(
-      surface: AppColors.darkModeBgColor,
+      surface: Color.fromARGB(255, 34, 28, 28),
       primary: AppColors.darkModePrimaryColor,
       secondary: AppColors.darkModeSecondaryColor,
 

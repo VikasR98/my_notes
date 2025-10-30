@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:my_notes/constants/colors.dart';
-import 'package:my_notes/constants/dimes.dart';
-import 'package:my_notes/constants/routes.dart';
 import 'package:my_notes/constants/utils.dart';
 import 'package:my_notes/screen/signIn/sign_in_viewmodel.dart';
-import 'package:my_notes/screen/signUp/sign_up_view.dart';
 import 'package:my_notes/widgets/app_button.dart';
 import 'package:my_notes/widgets/app_logo_asset.dart';
 import 'package:my_notes/widgets/app_textformfield_new.dart';

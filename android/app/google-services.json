@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "146961558673",
+    "project_id": "notes-app-7c2bd",
+    "storage_bucket": "notes-app-7c2bd.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:146961558673:android:6b26c393635405540a6330",
+        "android_client_info": {
+          "package_name": "com.beautifulminds.my_notes"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDDQMI1DL7wW1efFLF5Y7kFNHPtRz-c_rk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
