@@ -37,7 +37,7 @@ class SaveButtonUi extends StatelessWidget {
       Fluttertoast.showToast(msg: 'Please enter title or description');
       return;
     }
-    if(viewModel.selectedValue == 0){
+    if (viewModel.selectedValue == 0) {
       Fluttertoast.showToast(msg: 'Please select mood');
       return;
     }
@@ -49,6 +49,8 @@ class SaveButtonUi extends StatelessWidget {
         description: viewModel.descriptionController.text,
         dateTime: convertToFullDateTime(viewModel.lastEditTime ?? ''),
         mood: viewModel.selectedValue,
+        createdAt: DateTime.now().millisecondsSinceEpoch,
+        updatedAt: DateTime.now().millisecondsSinceEpoch,
       ),
     );
   }
@@ -59,7 +61,7 @@ class SaveButtonUi extends StatelessWidget {
       Fluttertoast.showToast(msg: 'Please enter title or description');
       return;
     }
-    if(viewModel.selectedValue == 0){
+    if (viewModel.selectedValue == 0) {
       Fluttertoast.showToast(msg: 'Please select mood');
       return;
     }
@@ -70,6 +72,8 @@ class SaveButtonUi extends StatelessWidget {
         description: viewModel.descriptionController.text,
         dateTime: DateTime.now().toString(),
         mood: viewModel.selectedValue,
+        createdAt: DateTime.now().millisecondsSinceEpoch,
+        updatedAt: DateTime.now().millisecondsSinceEpoch,
       ),
     );
   }

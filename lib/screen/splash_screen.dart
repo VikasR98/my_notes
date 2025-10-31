@@ -1,4 +1,8 @@
+import 'dart:developer';
+
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:my_notes/constants/routes.dart';
 import 'package:my_notes/databse_helper/data_base_helper.dart';
 import 'package:my_notes/service/locator.dart';
@@ -12,32 +16,50 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
+  bool _isLoading = true;
+  bool _hasError = false;
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    goToNextRoute();
+
+    _initApp();
   }
 
-  Future<void> insertDemoUserIfNotExists() async {
-    const demoEmail = 'demo@example.com';
-    const demoPassword = 'demo1234';
-    const demoName = 'Demo User';
+  _initApp() async {
+    // await FirebaseAuth.instance
+    //     .signOut(); // 👈 force logout on app start (for testing)
+    setState(() {
+      _hasError = false;
+      _isLoading = true;
+    });
 
-    await DatabaseHelper().registerUser(
-      name: demoName,
-      email: demoEmail,
-      password: demoPassword,
-    );
+    try {
+      await DatabaseHelper().database;
+      setState(() {
+        _isLoading = false;
+      });
+      if (!mounted) return; // prenvents navigation after dispose
+      goToNextRoute();
+    } catch (e) {
+      log(e.toString());
+      Fluttertoast.showToast(msg: "Error creating database");
+      setState(() {
+        _hasError = true;
+        _isLoading = false;
+      });
+    }
   }
 
-  void goToNextRoute() {
+  void goToNextRoute() async {
     final sharedPrefs = locator<SharedPreferencesService>();
-    insertDemoUserIfNotExists();
+
+    // insertDemoUserIfNotExists();
     Future.delayed(
       const Duration(seconds: 2),
       () {
-        if (sharedPrefs.getUserId() != null) {
+        final user = FirebaseAuth.instance.currentUser;
+        if (user != null) {
           if (sharedPrefs.getIsPinEnabled() != null &&
               sharedPrefs.getIsPinEnabled() == true) {
             Navigator.pushReplacementNamed(context, appLockPinRoute);
@@ -51,19 +73,46 @@ class _SplashScreenState extends State<SplashScreen> {
     );
   }
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: Column(
+  Widget _buildErrorUI() {
+    return Center(
+      child: Column(
+        spacing: 10,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Expanded(
-            child: Image.asset(
-              'assets/images/logo.png',
-              fit: BoxFit.fitHeight,
+          const Icon(Icons.error_outline, color: Colors.red, size: 48),
+          const SizedBox(height: 16),
+          const Text("Failed to initialize app"),
+          const SizedBox(height: 8),
+          ElevatedButton(
+            onPressed: _initApp,
+            child: Text(
+              "Retry",
+              style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                    fontWeight: FontWeight.w900,
+                  ),
             ),
           ),
         ],
       ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: _hasError
+          ? _buildErrorUI()
+          : Column(
+              children: [
+                Expanded(
+                  child: Image.asset(
+                    'assets/images/logo.png',
+                    fit: BoxFit.fitHeight,
+                  ),
+                ),
+              ],
+            ),
     );
   }
 }

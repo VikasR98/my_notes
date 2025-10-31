@@ -152,7 +152,7 @@ class AppLockPinViewModel extends BaseViewModel {
 
   setProfileImage() async {
     final Map<String, dynamic>? userProfile =
-        await dbHelper.getUserProfile((sharedPrefs.getUserId() ?? 0));
+        await dbHelper.getUserProfile((sharedPrefs.getUserId() ?? ''));
 
     if (userProfile == null) {
       throw Exception('User profile not found');

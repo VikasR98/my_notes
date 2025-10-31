@@ -84,7 +84,7 @@ class EntryListViewModel extends BaseViewModel {
 
   getAllEntries() async {
     setBusy(true);
-    entries = await dbHelper.getDiaryEntries(sharedPrefs.getUserId() ?? 0);
+    entries = await dbHelper.getDiaryEntries(sharedPrefs.getUserId() ?? '');
     entries = entries?.reversed.cast<DiaryEntry>().toList();
     log(entries!.length.toString());
     notifyListeners();
@@ -118,7 +118,7 @@ class EntryListViewModel extends BaseViewModel {
   }
 
   deleteDiaryEntry({required int id}) async {
-    dbHelper.deleteDiaryEntry(id, sharedPrefs.getUserId() ?? 0).then((value) {
+    dbHelper.deleteDiaryEntry(id, sharedPrefs.getUserId() ?? '').then((value) {
       getAllEntries();
       if (kDebugMode) {
         print(value.toString());

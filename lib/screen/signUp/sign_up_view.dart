@@ -26,6 +26,7 @@ class _SignUpViewState extends State<SignUpView> {
 
   @override
   Widget build(BuildContext context) {
+    setState(() {});
     double statusBarHeight = MediaQuery.of(context).padding.top;
     return ViewModelBuilder.reactive(
         viewModelBuilder: () => SignUpViewModel(),
@@ -45,14 +46,23 @@ class _SignUpViewState extends State<SignUpView> {
                               Column(
                                 children: [
                                   const AppLogoAsset(),
-                                  Text(
-                                    'Sign Up',
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .headlineLarge
-                                        ?.copyWith(
-                                          fontWeight: FontWeight.w900,
-                                        ),
+                                  GestureDetector(
+                                    onTap: () {
+                                      viewModel.nameController.text = "Vikas";
+                                      viewModel.emailController.text =
+                                          'vikasrana@gmail.com';
+                                      viewModel.passwordController.text =
+                                          'vikasrana';
+                                    },
+                                    child: Text(
+                                      'Sign Up',
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .headlineLarge
+                                          ?.copyWith(
+                                            fontWeight: FontWeight.w900,
+                                          ),
+                                    ),
                                   ),
                                 ],
                               ),
@@ -131,20 +141,24 @@ class _SignUpViewState extends State<SignUpView> {
                                       ],
                                     ),
                                   )),
-                              AppButton(
-                                bgColor: viewModel.allValComplete
-                                    ? AppColors.primaryColor
-                                    : AppColors.accentColorFifty,
-                                onTap: () {
-                                  if (_formKey.currentState!.validate()) {
-                                    viewModel.registerUser();
-                                  } else {
-                                    viewModel.validateMode =
-                                        AutovalidateMode.always;
-                                  }
-                                },
-                                btnText: 'Sign Up',
-                              )
+                              viewModel.isBusy
+                                  ? const CircularProgressIndicator.adaptive(
+                                      backgroundColor: AppColors.primaryColor,
+                                    )
+                                  : AppButton(
+                                      bgColor: viewModel.allValComplete
+                                          ? AppColors.primaryColor
+                                          : AppColors.accentColorFifty,
+                                      onTap: () {
+                                        if (_formKey.currentState!.validate()) {
+                                          viewModel.registerUser(context);
+                                        } else {
+                                          viewModel.validateMode =
+                                              AutovalidateMode.always;
+                                        }
+                                      },
+                                      btnText: 'Sign Up',
+                                    )
                             ],
                           ),
                         ),

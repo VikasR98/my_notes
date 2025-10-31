@@ -1,9 +1,12 @@
 import 'dart:io';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:my_notes/constants/routes.dart';
 import 'package:my_notes/databse_helper/data_base_helper.dart';
+import 'package:my_notes/model/auth_result.dart';
+import 'package:my_notes/service/auth_service.dart';
 import 'package:my_notes/service/locator.dart';
 import 'package:my_notes/service/shared_prefs_service.dart';
 import 'package:stacked/stacked.dart';
@@ -71,36 +74,56 @@ class SignInViewModel extends BaseViewModel {
     return;
   }
 
-  Future<bool> isUser() async {
-    return await DatabaseHelper().checkUserExistence(
-      email: emailController.text.trim(),
-    );
-  }
+  // Future<bool> isUser() async {
+  //   final user = FirebaseAuth.instance.currentUser;
+  //   // return await DatabaseHelper().checkUserExistence(
+  //   //   email: emailController.text.trim(),
+  //   // );
+  // }
 
   final sharedPrefs = locator<SharedPreferencesService>();
 
   Future<void> login(
     context,
   ) async {
-    if (await isUser()) {
-      int? isUserId = await DatabaseHelper().login(
-        email: emailController.text.trim(),
-        password: passwordController.text.trim(),
+    setBusy(true);
+    AuthResult authResult = await AuthService().signIn(
+      emailController.text.trim(),
+      passwordController.text.trim(),
+    );
+    if (authResult.isSuccess) {
+      sharedPrefs.setUserId(authResult.user?.uid ?? '');
+
+      Navigator.of(context).pushNamedAndRemoveUntil(
+        entryListRoute,
+        (route) => false,
       );
-
-      if (isUserId != null) {
-        sharedPrefs.setUserId(isUserId);
-
-        Navigator.of(context).pushNamedAndRemoveUntil(
-          entryListRoute,
-          (route) => false,
-        );
-      } else {
-        Fluttertoast.showToast(msg: "Invalid credentials");
-      }
     } else {
-      Fluttertoast.showToast(msg: "Email does not exist");
+      // ❌ triggering UI elements from viewmodel/changenotifier is violation
+      // of separation of concern, not testable
+      /// move it to UI file
+      Fluttertoast.showToast(msg: authResult.error.toString());
     }
+    setBusy(false);
+    // if (await isUser()) {
+    //   int? isUserId = await DatabaseHelper().login(
+    //     email: emailController.text.trim(),
+    //     password: passwordController.text.trim(),
+    //   );
+
+    //   if (isUserId != null) {
+    //     sharedPrefs.setUserId(isUserId);
+
+    // Navigator.of(context).pushNamedAndRemoveUntil(
+    //   entryListRoute,
+    //   (route) => false,
+    // );
+    //   } else {
+    //     Fluttertoast.showToast(msg: "Invalid credentials");
+    //   }
+    // } else {
+    //   Fluttertoast.showToast(msg: "Email does not exist");
+    // }
   }
 // import 'dart:io';
 

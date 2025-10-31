@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:flutter/foundation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SharedPreferencesService {
@@ -19,8 +20,11 @@ class SharedPreferencesService {
   SharedPreferences? get prefs => _prefs;
 
   // Save an integer value (userId)
-  Future<void> setUserId(int userId) async {
-    await _prefs?.setInt(userIdKey, userId);
+  Future<void> setUserId(String userId) async {
+    if (kDebugMode) {
+      log('saving to sharedPrefs: uid-> $userId');
+    }
+    await _prefs?.setString(userIdKey, userId);
   }
 
   // save pin value
@@ -53,8 +57,8 @@ class SharedPreferencesService {
   }
 
   // Get an integer value (userId)
-  int? getUserId() {
-    return _prefs?.getInt(userIdKey);
+  String? getUserId() {
+    return _prefs?.getString(userIdKey);
   }
 
   // Remove userId (e.g., for logout)

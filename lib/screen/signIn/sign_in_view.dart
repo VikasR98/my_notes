@@ -109,20 +109,22 @@ class _SignInViewState extends State<SignInView> {
                             )),
 
                         // Spacer(),
-                        AppButton(
-                          bgColor: viewModel.allValComplete
-                              ? AppColors.primaryColor
-                              : AppColors.accentColorFifty,
-                          onTap: () {
-                            if (_formKey.currentState!.validate()) {
-                              viewModel.login(context);
-                            } else {
-                              viewModel.formAutoValidate =
-                                  AutovalidateMode.always;
-                            }
-                          },
-                          btnText: 'Sign In',
-                        )
+                        viewModel.isBusy
+                            ? const CircularProgressIndicator.adaptive()
+                            : AppButton(
+                                bgColor: viewModel.allValComplete
+                                    ? AppColors.primaryColor
+                                    : AppColors.accentColorFifty,
+                                onTap: () {
+                                  if (_formKey.currentState!.validate()) {
+                                    viewModel.login(context);
+                                  } else {
+                                    viewModel.formAutoValidate =
+                                        AutovalidateMode.always;
+                                  }
+                                },
+                                btnText: 'Sign In',
+                              )
                       ],
                     ),
                   ),

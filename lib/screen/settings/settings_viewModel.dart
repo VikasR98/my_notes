@@ -8,6 +8,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:my_notes/constants/colors.dart';
 import 'package:my_notes/constants/routes.dart';
 import 'package:my_notes/databse_helper/data_base_helper.dart';
+import 'package:my_notes/service/auth_service.dart';
 import 'package:my_notes/service/locator.dart';
 import 'package:my_notes/service/shared_prefs_service.dart';
 import 'package:stacked/stacked.dart';
@@ -149,6 +150,8 @@ class SettingsViewModel extends BaseViewModel {
 
   void logout(BuildContext context) async {
     setBusy(true);
+
+    await AuthService().signOut();
     bool isCleared = await sharedPrefs.clearSharedPreferences();
     setBusy(false);
     if (isCleared) {
@@ -164,14 +167,14 @@ class SettingsViewModel extends BaseViewModel {
   final dbHelper = DatabaseHelper();
 
   Future<Map<String, dynamic>?> getUserProfile() async {
-    return await dbHelper.getUserProfile(sharedPrefs.getUserId() ?? 0);
+    return await dbHelper.getUserProfile(sharedPrefs.getUserId() ?? '');
   }
 
   // updateUserProfileImage() async {
 
   setProfileImage() async {
     final Map<String, dynamic>? userProfile =
-        await dbHelper.getUserProfile((sharedPrefs.getUserId() ?? 0));
+        await dbHelper.getUserProfile((sharedPrefs.getUserId() ?? ''));
     if (userProfile == null) {
       throw Exception('User profile not found');
     }
@@ -198,8 +201,8 @@ class SettingsViewModel extends BaseViewModel {
   Future<void> updateUserProfileImage() async {
     try {
       // Fetch user profile
-      final userId = sharedPrefs.getUserId() ?? 0;
-      if (userId == 0) {
+      final userId = sharedPrefs.getUserId() ?? '';
+      if (userId == null) {
         throw Exception('Invalid user ID');
       }
 
@@ -214,7 +217,6 @@ class SettingsViewModel extends BaseViewModel {
         name: userProfile['name'],
         email: userProfile['email'],
         imageFile: profileImage,
-        password: userProfile['password'],
       );
 
       if (updatedId != null) {

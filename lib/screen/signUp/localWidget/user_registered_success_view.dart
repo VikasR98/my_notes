@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:my_notes/app/image_config.dart';
 import 'package:my_notes/constants/colors.dart';
+import 'package:my_notes/constants/routes.dart';
 import 'package:my_notes/constants/strings.dart';
 import 'package:my_notes/constants/utils.dart';
 import 'package:my_notes/widgets/app_button.dart';
@@ -49,10 +50,9 @@ class UserRegisteredSuccessView extends StatelessWidget {
               ],
             ),
             verticalSpace(10),
-
             AppButton(
               onTap: () {
-                Navigator.pushReplacementNamed(context, '/signInRoute');
+                Navigator.pushReplacementNamed(context, entryListRoute);
               },
               btnText: 'Sign In',
             )
@@ -62,5 +62,3 @@ class UserRegisteredSuccessView extends StatelessWidget {
     );
   }
 }
-
-

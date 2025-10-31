@@ -117,16 +117,16 @@ class NoEntryWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Image.asset(
-              nicePen,
-              height: 100,
-            ),
-            Text('Everyday is day one')
-          ],
-        ),
-      );
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Image.asset(
+            nicePen,
+            height: 100,
+          ),
+          const Text('Everyday is a new day')
+        ],
+      ),
+    );
   }
 }

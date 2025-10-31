@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -17,10 +19,14 @@ class AddEntryViewModel extends BaseViewModel {
   FormAction? formAction = FormAction.add;
 
   insertNewEntry({required DiaryEntry entry, required context}) async {
-    int id = await dbHelper.insertDiaryEntry(
-        entry, sharedPrefsService.getUserId() ?? 0);
-    if (kDebugMode) {
-      print('Inserted entry with ID: $id');
+    try {
+      int id = await dbHelper.insertDiaryEntry(
+          entry, sharedPrefsService.getUserId() ?? '');
+      if (kDebugMode) {
+        print('Inserted entry with ID: $id');
+      }
+    } catch (e) {
+      log(e.toString());
     }
     titleController.clear();
     descriptionController.clear();
@@ -49,7 +55,8 @@ class AddEntryViewModel extends BaseViewModel {
   }
 
   updateEntry({required DiaryEntry entry, required context}) async {
-    await dbHelper.updateDiaryEntry(entry, sharedPrefsService.getUserId() ?? 0);
+    await dbHelper.updateDiaryEntry(
+        entry, sharedPrefsService.getUserId() ?? '');
     titleController.clear();
     descriptionController.clear();
     selectedValue = 0;
